@@ -1,0 +1,1 @@
+<h1 class="text-bold">Footer</h1>

@@ -1,0 +1,31 @@
+html,
+body {
+  height: 100%;
+}
+
+#page-content {
+    padding-bottom: 40px;
+}
+
+#sticky-footer {
+    width: 100vw;
+    position: fixed;
+    bottom: 0;
+}
+
+.none-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+a.menu-link.d-flex.aling-items-center.p-2{
+    color: #000;
+    border: none;
+    padding: 0 20px 0 20px;
+    /* transition: all 0.3s ease; */
+}
+
+a.menu-link.d-flex.aling-items-center.p-2:hover {
+    /* border-radius: 20px; */
+    border-left: 5px solid green;
+    /* border-right: 5px solid blue; */
+}

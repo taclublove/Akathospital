@@ -39,13 +39,14 @@
                                                     <li class="ms-[9rem] mt-1">
                                                         <a href="{{ $ita2->link }}" class="hover:text-blue-600 " target="_blank">{{ $ita2->itaSub2_name }}</a>
                                                     </li>
-                                                @elseif($ita->file != '' && $ita2->link = '')
+                                                @elseif($ita2->file != '' && $ita2->link == '')
                                                     <li class="ms-[9rem] mt-1">
                                                         <a href="{{ route('showPDF', ['id' => $ita2->id, 'mode' => 'itaSub2']) }}" class="hover:text-blue-600 ">{{ $ita2->itaSub2_name }}</a>
                                                     </li>
-                                                @else {
-                                                    <p>{{ $ita2->itaSub2_name }}</p>
-                                                }
+                                                @else
+                                                    <li class="ms-[9rem] mt-1">
+                                                        <p>{{ $ita2->itaSub2_name }}</p>
+                                                    </li>
                                                 @endif
                                                 @if(isset($ita2->itaSub3))
                                                     <ul class="list-disc">

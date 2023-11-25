@@ -97,7 +97,7 @@ class itaSub2Controller extends Controller
                             'itaSub1_id' => $request->itaSub1_id,
                             'itaSub2_name' => $request->itaSub2_name,
                             'file' => $fileName,
-                            'link' => $request->link
+                            'link' => ''
                         ];
 
                         Ita_sub_2::create($itaSub2Data);
@@ -115,11 +115,8 @@ class itaSub2Controller extends Controller
                             'icon' => 'error'
                         ]);
                     }
-                } else {
+                } else if($request->link) {
                     $fileName = '';
-                }
-
-                if(isset($request->link)) {
                     $itaSub2Data = [
                         'itaSub1_id' => $request->itaSub1_id,
                         'itaSub2_name' => $request->itaSub2_name,
@@ -135,26 +132,14 @@ class itaSub2Controller extends Controller
                         'icon' => 'success'
                     ]);
                 } else {
-                    $itaSub2Data = [
-                        'itaSub1_id' => $request->itaSub1_id,
-                        'itaSub2_name' => $request->itaSub2_name,
-                        'file' => $fileName
-                    ];
-
-                    Ita_sub_2::create($itaSub2Data);
-                    return response()->json([
-                        'status' => 200,
-                        'title' => 'Added!',
-                        'message' => 'เพิ่มข้อมูลเสร็จสิ้น',
-                        'icon' => 'success'
-                    ]);
+                    $fileName = '';
                 }
 
                 $itaSub2Data = [
                     'itaSub1_id' => $request->itaSub1_id,
                     'itaSub2_name' => $request->itaSub2_name,
                     'file' => $fileName,
-                    'link' => $request->link
+                    'link' => ''
                 ];
 
                 Ita_sub_2::create($itaSub2Data);
@@ -287,6 +272,32 @@ class itaSub2Controller extends Controller
                             ]);
                         }
                     }
+                } else if($request->link) {
+                    $fileName = '';
+
+                    $itaSub2Data = [
+                        'itaSub1_id' => $request->itaSub1_id,
+                        'itaSub2_name' => $request->itaSub2_name,
+                        'file' => $fileName,
+                        'link' => $request->link
+                    ];
+
+                    if($itaSub2Data) {
+                        $itaSub2->update($itaSub2Data);
+                        return response()->json([
+                            'status' => 200,
+                            'title' => 'Added!',
+                            'message' => 'Update ข้อมูลเสร็จสิ้น',
+                            'icon' => 'success'
+                        ]);
+                    } else {
+                        return response()->json([
+                            'status' => 300,
+                            'title' => 'Error!',
+                            'message' => 'Update ข้อมูลไม่สำเร็จ',
+                            'icon' => 'error'
+                        ]);
+                    }
                 } else {
                     $fileName = '';
                 }
@@ -298,7 +309,7 @@ class itaSub2Controller extends Controller
             'itaSub1_id' => $request->itaSub1_id,
             'itaSub2_name' => $request->itaSub2_name,
             'file' => $fileName,
-            'link' => $request->link
+            'link' => ''
         ];
         if($itaSub2Data) {
             $itaSub2->update($itaSub2Data);

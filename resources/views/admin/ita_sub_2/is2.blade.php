@@ -25,7 +25,7 @@
 
                         <div class="col-md-6">
                             <select class="form-select @error('itaMain_id') is-invalid @enderror"
-                                aria-label="Default select example" id="itaSub1_id" name="itaSub1_id">
+                                aria-label="Default select example" id="itaSub1_id" name="itaSub1_id" style="width: 240px; overflow: hidden; text-overflow: ellipsis;">
                                 <option selected autofocus>เลือก Ita Sub 1</option>
                                 @foreach ($itaSub1 as $itaSub)
                                     <option value="{{ $itaSub->id }}">{{ $itaSub->itaMain->name_ita_main }} : {{ $itaSub->ita_sub_name }}</option>

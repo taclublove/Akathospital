@@ -132,7 +132,19 @@ class itaSub2Controller extends Controller
                         'icon' => 'success'
                     ]);
                 } else {
-                    $fileName = '';
+                    $itaSub2Data = [
+                        'itaSub1_id' => $request->itaSub1_id,
+                        'itaSub2_name' => $request->itaSub2_name,
+                        'file' => $fileName
+                    ];
+
+                    Ita_sub_2::create($itaSub2Data);
+                    return response()->json([
+                        'status' => 200,
+                        'title' => 'Added!',
+                        'message' => 'เพิ่มข้อมูลเสร็จสิ้น',
+                        'icon' => 'success'
+                    ]);
                 }
 
                 $itaSub2Data = [

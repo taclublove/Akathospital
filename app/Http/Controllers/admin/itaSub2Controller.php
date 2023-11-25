@@ -138,7 +138,8 @@ class itaSub2Controller extends Controller
                     $itaSub2Data = [
                         'itaSub1_id' => $request->itaSub1_id,
                         'itaSub2_name' => $request->itaSub2_name,
-                        'file' => $fileName
+                        'file' => $fileName,
+                        'link' => ''
                     ];
 
                     Ita_sub_2::create($itaSub2Data);

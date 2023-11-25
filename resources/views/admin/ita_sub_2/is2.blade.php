@@ -59,6 +59,21 @@
                         </div>
                     </div>
 
+                    <div class="row mb-3">
+                        <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Link') }}</label>
+
+                        <div class="col-md-6">
+                            <input type="text" class="form-control @error('link') is-invalid @enderror" name="link"
+                                id="link" autocomplete="link" autofocus>
+
+                            @error('link')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                    </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                             onclick="clearEditForm();">Close</button>
@@ -177,6 +192,7 @@
                     success: function(response) {
                         $("#itaSub1_id").val(response.itaSub1_id);
                         $("#itaSub2_name").val(response.itaSub2_name);
+                        $("#link").val(response.link);
                         $("#file").html(
                             `<img src="storage/files/ita/66/itaSub2/${response.file}" width="100" class="img-fluid img-thumbnail">`
                         );

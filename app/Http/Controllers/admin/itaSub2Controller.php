@@ -31,6 +31,7 @@ class itaSub2Controller extends Controller
                 <th>ปีงบประมาณ</th>
                 <th>ItaSubName</th>
                 <th>File</th>
+                <th>Link</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -42,6 +43,7 @@ class itaSub2Controller extends Controller
                 <td>' . $itaSub->itaSub1->itaMain->fiscalYear->fiscalYear_name . '</td>
                 <td>' . $itaSub->itaSub2_name . '</td>
                 <td><a href="' . route("showPDF", ["id" => $itaSub->id, "mode" => $mode]) . '">' . $itaSub->file . '</a></td>
+                <td>' . $itaSub->link . '</td>
                 <td>
                   <a href="#" id="' . $itaSub->id . '" class="text-success mx-1 editIcon" data-bs-toggle="modal" data-bs-target="#ItaSub2Modal"><i class="bi-pencil-square h4"></i></a>
 
@@ -94,7 +96,8 @@ class itaSub2Controller extends Controller
                         $itaSub2Data = [
                             'itaSub1_id' => $request->itaSub1_id,
                             'itaSub2_name' => $request->itaSub2_name,
-                            'file' => $fileName
+                            'file' => $fileName,
+                            'link' => $request->link
                         ];
 
                         Ita_sub_2::create($itaSub2Data);
@@ -116,10 +119,42 @@ class itaSub2Controller extends Controller
                     $fileName = '';
                 }
 
+                if(isset($request->link)) {
+                    $itaSub2Data = [
+                        'itaSub1_id' => $request->itaSub1_id,
+                        'itaSub2_name' => $request->itaSub2_name,
+                        'file' => $fileName,
+                        'link' => $request->link
+                    ];
+
+                    Ita_sub_2::create($itaSub2Data);
+                    return response()->json([
+                        'status' => 200,
+                        'title' => 'Added!',
+                        'message' => 'เพิ่มข้อมูลเสร็จสิ้น',
+                        'icon' => 'success'
+                    ]);
+                } else {
+                    $itaSub2Data = [
+                        'itaSub1_id' => $request->itaSub1_id,
+                        'itaSub2_name' => $request->itaSub2_name,
+                        'file' => $fileName
+                    ];
+
+                    Ita_sub_2::create($itaSub2Data);
+                    return response()->json([
+                        'status' => 200,
+                        'title' => 'Added!',
+                        'message' => 'เพิ่มข้อมูลเสร็จสิ้น',
+                        'icon' => 'success'
+                    ]);
+                }
+
                 $itaSub2Data = [
                     'itaSub1_id' => $request->itaSub1_id,
                     'itaSub2_name' => $request->itaSub2_name,
-                    'file' => $fileName
+                    'file' => $fileName,
+                    'link' => $request->link
                 ];
 
                 Ita_sub_2::create($itaSub2Data);
@@ -262,7 +297,8 @@ class itaSub2Controller extends Controller
         $itaSub2Data = [
             'itaSub1_id' => $request->itaSub1_id,
             'itaSub2_name' => $request->itaSub2_name,
-            'file' => $fileName
+            'file' => $fileName,
+            'link' => $request->link
         ];
         if($itaSub2Data) {
             $itaSub2->update($itaSub2Data);

@@ -35,14 +35,17 @@
                                     @if(isset($ita1->itaSub2))
                                         <ul class="list-disc">
                                             @foreach ($ita1->itaSub2 as $ita2 )
-                                                @if($ita2->file == '')
+                                                @if($ita2->file == '' && $ita2->link != '')
                                                     <li class="ms-[9rem] mt-1">
-                                                        <p>{{ $ita2->itaSub2_name }}</p>
+                                                        <a href="{{ $ita2->link }}" class="hover:text-blue-600 " target="_blank">{{ $ita2->itaSub2_name }}</a>
                                                     </li>
-                                                @else
+                                                @elseif($ita->file != '' && $ita2->link = '')
                                                     <li class="ms-[9rem] mt-1">
                                                         <a href="{{ route('showPDF', ['id' => $ita2->id, 'mode' => 'itaSub2']) }}" class="hover:text-blue-600 ">{{ $ita2->itaSub2_name }}</a>
                                                     </li>
+                                                @else {
+                                                    <p>{{ $ita2->itaSub2_name }}</p>
+                                                }
                                                 @endif
                                                 @if(isset($ita2->itaSub3))
                                                     <ul class="list-disc">

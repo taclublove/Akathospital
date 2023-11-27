@@ -15,7 +15,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                         onclick="clearEditForm();"></button>
                 </div>
-                <form action="#" method="POST" class="form" id="itaSub2_form" enctype="multipart/form-data">
+                <form action="#" method="POST" class="form mt-3" id="itaSub2_form" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="itaSub2_id" class="itaSub2_id" id="itaSub2_id">
                     <input type="hidden" name="itaSub2_file" id="itaSub2_file">

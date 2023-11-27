@@ -12,7 +12,8 @@ class Ita_sub_4 extends Model
     protected $fillable = [
         'itaSub3_id',
         'itaSub4_name',
-        'file'
+        'file',
+        'link'
     ];
 
     public function itaSub3() {

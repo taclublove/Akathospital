@@ -35,6 +35,7 @@
                     </a>
                     <div class="collapse mt-3" id="collapseExample2">
                         <div class="card card-body">
+                            <a href="{{ url('fiscalYear') }}" class="menu-link d-flex aling-items-center p-2">เพิ่มข้อมูลปีงบประมาณ</a>
                             <a href="{{ url('itaMain') }}" class="menu-link d-flex aling-items-center p-2">ITA Main</a>
                             <a href="{{ url('itaSub1') }}" class="menu-link d-flex aling-items-center p-2">ITA Sub 1</a>
                             <a href="{{ url('itaSub2') }}" class="menu-link d-flex aling-items-center p-2">ITA Sub 2</a>
@@ -60,7 +61,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="m-3">
+                    {{-- <div class="m-3">
                         <a class="btn btn-success w-100" onClick="toggleCollapse('testCollapse22')" data-bs-toggle="collapse"
                             href="#collapseExample22" role="button" aria-expanded="false" aria-controls="collapseExample">
                             การจัดการข้อมูลภายใน ITA
@@ -72,7 +73,7 @@
                                 <a href="{{ url('fiscalYear') }}" class="menu-link d-flex aling-items-center p-2">เพิ่มข้อมูลปีงบประมาณ</a>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 @else
 
                 @endif

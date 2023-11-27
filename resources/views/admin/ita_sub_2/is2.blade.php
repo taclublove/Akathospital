@@ -25,7 +25,7 @@
 
                         <div class="col-md-6">
                             <select class="form-select @error('itaMain_id') is-invalid @enderror"
-                                aria-label="Default select example" id="itaSub1_id" name="itaSub1_id" style="width: 240px; overflow: hidden; text-overflow: ellipsis;">
+                                aria-label="Default select example" id="itaSub1_id" name="itaSub1_id" >
                                 <option selected autofocus>เลือก Ita Sub 1</option>
                                 @foreach ($itaSub1 as $itaSub)
                                     <option value="{{ $itaSub->id }}">{{ $itaSub->itaMain->name_ita_main }} : {{ $itaSub->ita_sub_name }}</option>
@@ -49,17 +49,28 @@
                         </div>
                     </div>
 
-                    <div class="row mb-3">
+                    <div class="mb-3" style="margin-left: 10rem;">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                            <label class="form-check-label" for="inlineRadio1">เพิ่ม File</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                            <label class="form-check-label" for="inlineRadio2">เพิ่ม Link</label>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3" id="showInputFile">
                         <label for="password-confirm"
                             class="col-md-4 col-form-label text-md-end">{{ __('เลือก File') }}</label>
 
                         <div class="col-md-6">
                             <input type="file" class="form-control" name="file">
-                            <div id="file"></div>
+                            <input id="file" class="mt-2">
                         </div>
                     </div>
 
-                    <div class="row mb-3">
+                    <div class="row mb-3" id="showInputLink">
                         <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Link') }}</label>
 
                         <div class="col-md-6">
@@ -106,18 +117,64 @@
 @endsection
 
 @section('script')
-    <script>
+        <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            truncateSelectOptions('itaSub1_id');
+        });
+
+        function truncateSelectOptions(selectId) {
+            var select = document.getElementById(selectId);
+
+            if (select) {
+                var options = select.options;
+
+                for (var i = 0; i < options.length; i++) {
+                    var optionText = options[i].text;
+                    var maxLength = 20; // กำหนดความยาวที่ต้องการ
+
+                    if (optionText.length > maxLength) {
+                        options[i].text = optionText.substring(0, maxLength) + '...';
+                    }
+                    if (optionText.length > maxLength) {
+                        options[i].text = optionText.substring(0, maxLength) + '...';
+                    }
+                }
+            }
+        }
+
         $('.addIcon').on('click', function() {
             $('#title').text('Add new ita sub 2');
             $('#mode').attr('value', 'add');
             $('#file').empty();
             $("#itaSub2_form")[0].reset();
+            $('#showInputFile').hide();
+            $('#showInputLink').hide();
+            $('#file').hide();
+            $('#inlineRadio1').on('click', function() {
+                $('#showInputFile').show();
+                $('#showInputLink').hide();
+            });
+            $('#inlineRadio2').on('click', function() {
+                $('#showInputFile').hide();
+                $('#showInputLink').show();
+            });
         });
 
         $(document).on('click', '.editIcon', function() {
             $('#title').text('Update ita sub 2');
             $('#mode').attr('value', 'edit');
-        })
+            $('#showInputFile').hide();
+            $('#showInputLink').hide();
+            $('#file').attr('readonly', true).show();
+            $('#inlineRadio1').on('click', function() {
+                $('#showInputFile').show();
+                $('#showInputLink').hide();
+            });
+            $('#inlineRadio2').on('click', function() {
+                $('#showInputFile').hide();
+                $('#showInputLink').show();
+            });
+        });
 
         function clearEditForm() {
             $('#file').empty();
@@ -126,7 +183,7 @@
 
         $(function() {
 
-            // add new ita sub 2 ajax request
+            // add & update new ita sub 2 ajax request
             $("#itaSub2_form").submit(function(e) {
                 e.preventDefault();
                 const fd = new FormData(this);
@@ -193,9 +250,10 @@
                         $("#itaSub1_id").val(response.itaSub1_id);
                         $("#itaSub2_name").val(response.itaSub2_name);
                         $("#link").val(response.link);
-                        $("#file").html(
-                            `<img src="storage/files/ita/66/itaSub2/${response.file}" width="100" class="img-fluid img-thumbnail">`
-                        );
+                        $("#file").val(response.file);
+                        // $("#file").html(
+                        //     `<img src="storage/files/ita/66/itaSub2/${response.file}" width="100" class="img-fluid img-thumbnail">`
+                        // );
                         $("#itaSub2_id").val(response.id);
                         $("#itaSub2_file").val(response.file);
                     }

@@ -27,10 +27,11 @@ class itaSub4Controller extends Controller
             <thead>
               <tr>
                 <th>ID</th>
-                <th>ItaSub1</th>
+                <th>ItaSub3</th>
                 <th>ปีงบประมาณ</th>
                 <th>ItaSubName</th>
                 <th>File</th>
+                <th>Link</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -42,6 +43,7 @@ class itaSub4Controller extends Controller
                 <td>' . $itaSub->itaSub3->itaSub2->itaSub1->itaMain->fiscalYear->fiscalYear_name . '</td>
                 <td>' . $itaSub->itaSub4_name . '</td>
                 <td><a href="' . route("showPDF", ["id" => $itaSub->id, "mode" => $mode]) . '">' . $itaSub->file . '</a></td>
+                <td>' . $itaSub->link . '</td>
                 <td>
                   <a href="#" id="' . $itaSub->id . '" class="text-success mx-1 editIcon" data-bs-toggle="modal" data-bs-target="#ItaSub4Modal"><i class="bi-pencil-square h4"></i></a>
 
@@ -94,7 +96,8 @@ class itaSub4Controller extends Controller
                         $itaSub4Data = [
                             'itaSub3_id' => $request->itaSub3_id,
                             'itaSub4_name' => $request->itaSub4_name,
-                            'file' => $fileName
+                            'file' => $fileName,
+                            'link' => ''
                         ];
 
                         Ita_sub_4::create($itaSub4Data);
@@ -112,14 +115,45 @@ class itaSub4Controller extends Controller
                             'icon' => 'error'
                         ]);
                     }
+                } else if($request->link) {
+                    $fileName = '';
+                    $itaSub4Data = [
+                        'itaSub3_id' => $request->itaSub3_id,
+                        'itaSub4_name' => $request->itaSub4_name,
+                        'file' => $fileName,
+                        'link' => $request->link
+                    ];
+
+                    Ita_sub_4::create($itaSub4Data);
+                    return response()->json([
+                        'status' => 200,
+                        'title' => 'Added!',
+                        'message' => 'เพิ่มข้อมูลเสร็จสิ้น',
+                        'icon' => 'success'
+                    ]);
                 } else {
                     $fileName = '';
+                    $itaSub4Data = [
+                        'itaSub3_id' => $request->itaSub3_id,
+                        'itaSub4_name' => $request->itaSub4_name,
+                        'file' => $fileName,
+                        'link' => ''
+                    ];
+
+                    Ita_sub_4::create($itaSub4Data);
+                    return response()->json([
+                        'status' => 200,
+                        'title' => 'Added!',
+                        'message' => 'เพิ่มข้อมูลเสร็จสิ้น',
+                        'icon' => 'success'
+                    ]);
                 }
 
                 $itaSub4Data = [
                     'itaSub3_id' => $request->itaSub3_id,
                     'itaSub4_name' => $request->itaSub4_name,
-                    'file' => $fileName
+                    'file' => $fileName,
+                    'link' => ''
                 ];
 
                 Ita_sub_4::create($itaSub4Data);
@@ -179,11 +213,33 @@ class itaSub4Controller extends Controller
                         } else {
                             if($itaSub4) {
                                 Storage::delete('public/files/ita/66/itaSub4/' . $itaSub4->file);
+                                $itaSub4Data = [
+                                    'itaSub3_id' => $request->itaSub3_id,
+                                    'itaSub4_name' => $request->itaSub4_name,
+                                    'file' => $fileName,
+                                    'link' => '',
+                                ];
+                                if($itaSub4Data) {
+                                    $itaSub4->update($itaSub4Data);
+                                    return response()->json([
+                                        'status' => 200,
+                                        'title' => 'Added!',
+                                        'message' => 'Update ข้อมูลเสร็จสิ้น',
+                                        'icon' => 'success'
+                                    ]);
+                                } else {
+                                    return response()->json([
+                                        'status' => 300,
+                                        'title' => 'Error!',
+                                        'message' => 'Update ข้อมูลไม่สำเร็จ',
+                                        'icon' => 'error'
+                                    ]);
+                                }
                             } else {
                                 return response()->json([
                                     'status' => 400,
                                     'title' => 'Error!',
-                                    'message' => 'ลบรูปเก่าไม่สำเร็จ',
+                                    'message' => 'ลบไฟล์เก่าไม่สำเร็จ',
                                     'icon' => 'error'
                                 ]);
                             }
@@ -252,6 +308,43 @@ class itaSub4Controller extends Controller
                             ]);
                         }
                     }
+                } else if($request->link) {
+                    $fileName = '';
+
+                    if($itaSub4) {
+                        Storage::delete('public/files/ita/66/itaSub4/' . $itaSub4->file);
+                    } else {
+                        return response()->json([
+                            'status' => 400,
+                            'title' => 'Error!',
+                            'message' => 'ลบไฟล์เก่าไม่สำเร็จ',
+                            'icon' => 'error'
+                        ]);
+                    }
+
+                    $itaSub4Data = [
+                        'itaSub3_id' => $request->itaSub3_id,
+                        'itaSub4_name' => $request->itaSub4_name,
+                        'file' => $fileName,
+                        'link' => $request->link
+                    ];
+
+                    if($itaSub4Data) {
+                        $itaSub4->update($itaSub4Data);
+                        return response()->json([
+                            'status' => 200,
+                            'title' => 'Added!',
+                            'message' => 'Update ข้อมูลเสร็จสิ้น',
+                            'icon' => 'success'
+                        ]);
+                    } else {
+                        return response()->json([
+                            'status' => 300,
+                            'title' => 'Error!',
+                            'message' => 'Update ข้อมูลไม่สำเร็จ',
+                            'icon' => 'error'
+                        ]);
+                    }
                 } else {
                     $fileName = '';
                 }
@@ -259,10 +352,12 @@ class itaSub4Controller extends Controller
                 $fileName = $request->itaSub4_file;
             }
 		}
+        $fileName = $request->itaSub4_file;
         $itaSub4Data = [
             'itaSub3_id' => $request->itaSub3_id,
             'itaSub4_name' => $request->itaSub4_name,
-            'file' => $fileName
+            'file' => $fileName,
+            'link' => ''
         ];
         if($itaSub4Data) {
             $itaSub4->update($itaSub4Data);
@@ -274,7 +369,7 @@ class itaSub4Controller extends Controller
             ]);
         } else {
             return response()->json([
-                'status' => 300,
+                'status' => 400,
                 'title' => 'Error!',
                 'message' => 'Update ข้อมูลไม่สำเร็จ',
                 'icon' => 'error'

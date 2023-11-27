@@ -73,14 +73,14 @@ class itaSub2Controller extends Controller
             ]);
         } else {
             $validatorItaSub2Name = Validator::make($request->all(),[
-                'itaSub2_name' => ['required', 'string', 'max:200']
+                'itaSub2_name' => ['required', 'string', 'max:300']
             ]);
 
             if($validatorItaSub2Name->fails()) {
                 return response()->json([
                     'status' => 400,
                     'title' => 'Error!',
-                    'message' => 'สามารถกรอกข้อมูลได้แค่ 200 ตัวอักษร',
+                    'message' => 'สามารถกรอกข้อมูลได้แค่ 300 ตัวอักษร',
                     'icon' => 'error'
                 ]);
             } else {
@@ -132,6 +132,7 @@ class itaSub2Controller extends Controller
                         'icon' => 'success'
                     ]);
                 } else {
+                    $fileName = '';
                     $itaSub2Data = [
                         'itaSub1_id' => $request->itaSub1_id,
                         'itaSub2_name' => $request->itaSub2_name,
@@ -177,150 +178,181 @@ class itaSub2Controller extends Controller
 	public function itaSub2Update(Request $request) {
 		$fileName = '';
 		$itaSub2 = Ita_sub_2::find($request->itaSub2_id);
-        if ($request->hasFile('file')) {
+		if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            if($file) {
+                $fileExtensions = $file->getClientOriginalExtension();
+                $allowedExtensions = ['pdf'];
+                if(in_array(strtolower($fileExtensions), $allowedExtensions)) {
+                    $fileName = time() . '.' . $fileExtensions;
+                    $file->storeAs('public/files/ita/66/itaSub2', $fileName);
 
-        }
-		// if ($request->hasFile('file')) {
-        //     $file = $request->file('file');
-        //     if($file) {
-        //         $fileExtensions = $file->getClientOriginalExtension();
-        //         $allowedExtensions = ['pdf'];
-        //         if(in_array(strtolower($fileExtensions), $allowedExtensions)) {
-        //             $fileName = time() . '.' . $fileExtensions;
-        //             $file->storeAs('public/files/ita/66/itaSub2', $fileName);
+                    $validatorItaSub1ID = Validator::make($request->all(),[
+                        'itaSub1_id' => ['required', 'string', 'max:4', 'exists:ita_sub_1s,id']
+                    ]);
 
-        //             $validatorItaSub1ID = Validator::make($request->all(),[
-        //                 'itaSub1_id' => ['required', 'string', 'max:4', 'exists:ita_sub_1s,id']
-        //             ]);
+                    if($validatorItaSub1ID->fails()) {
+                        return response()->json([
+                            'status' => 400,
+                            'title' => 'Error!',
+                            'message' => 'สามารถกรอกข้อมูลได้แค่ 4 ตัวอักษร',
+                            'icon' => 'error'
+                        ]);
+                    } else {
+                        $validatorItaSub2Name = Validator::make($request->all(),[
+                            'itaSub2_name' => ['required', 'string', 'max:300']
+                        ]);
 
-        //             if($validatorItaSub1ID->fails()) {
-        //                 return response()->json([
-        //                     'status' => 400,
-        //                     'title' => 'Error!',
-        //                     'message' => 'สามารถกรอกข้อมูลได้แค่ 4 ตัวอักษร',
-        //                     'icon' => 'error'
-        //                 ]);
-        //             } else {
-        //                 $validatorItaSub2Name = Validator::make($request->all(),[
-        //                     'itaSub2_name' => ['required', 'string', 'max:200']
-        //                 ]);
+                        if($validatorItaSub2Name->fails()) {
+                            return response()->json([
+                                'status' => 400,
+                                'title' => 'Error!',
+                                'message' => 'สามารถกรอกข้อมูลได้แค่ 300 ตัวอักษร',
+                                'icon' => 'error'
+                            ]);
+                        } else {
+                            if($itaSub2) {
+                                Storage::delete('public/files/ita/66/itaSub2/' . $itaSub2->file);
+                                $itaSub2Data = [
+                                    'itaSub1_id' => $request->itaSub1_id,
+                                    'itaSub2_name' => $request->itaSub2_name,
+                                    'file' => $fileName,
+                                    'link' => '',
+                                ];
+                                if($itaSub2Data) {
+                                    $itaSub2->update($itaSub2Data);
+                                    return response()->json([
+                                        'status' => 200,
+                                        'title' => 'Added!',
+                                        'message' => 'Update ข้อมูลเสร็จสิ้น',
+                                        'icon' => 'success'
+                                    ]);
+                                } else {
+                                    return response()->json([
+                                        'status' => 300,
+                                        'title' => 'Error!',
+                                        'message' => 'Update ข้อมูลไม่สำเร็จ',
+                                        'icon' => 'error'
+                                    ]);
+                                }
+                            } else {
+                                return response()->json([
+                                    'status' => 400,
+                                    'title' => 'Error!',
+                                    'message' => 'ลบไฟล์เก่าไม่สำเร็จ',
+                                    'icon' => 'error'
+                                ]);
+                            }
+                        }
+                    }
+                } else {
+                    return response()->json([
+                        'status' => 400,
+                        'title' => 'Error!',
+                        'message' => 'นามสกุลไฟล์ของคุณไม่ถูกต้องกรุณาใช้สกุลไฟล์ : .pdf',
+                        'icon' => 'error'
+                    ]);
+                }
+            } else {
+                return response()->json([
+                    'status' => 400,
+                    'title' => 'Error!',
+                    'message' => 'ไม่มีไฟล์ที่ส่งเข้ามา',
+                    'icon' => 'error'
+                ]);
+            }
+		} else{
+            if($fileName == '') {
+                if($request->hasFile('file')) {
+                    $file = $request->file('file');
+                    if($file) {
+                        $fileExtensions = $file->getClientOriginalExtension();
+                        $allowedExtensions = ['pdf'];
+                        if(in_array(strtolower($fileExtensions), $allowedExtensions)) {
+                            $fileName = time() . '.' . $fileExtensions;
+                            $file->storeAs('public/files/ita/66/itaSub2', $fileName);
 
-        //                 if($validatorItaSub2Name->fails()) {
-        //                     return response()->json([
-        //                         'status' => 400,
-        //                         'title' => 'Error!',
-        //                         'message' => 'สามารถกรอกข้อมูลได้แค่ 200 ตัวอักษร',
-        //                         'icon' => 'error'
-        //                     ]);
-        //                 } else {
-        //                     if($itaSub2) {
-        //                         Storage::delete('public/files/ita/66/itaSub2/' . $itaSub2->file);
-        //                     } else {
-        //                         return response()->json([
-        //                             'status' => 400,
-        //                             'title' => 'Error!',
-        //                             'message' => 'ลบรูปเก่าไม่สำเร็จ',
-        //                             'icon' => 'error'
-        //                         ]);
-        //                     }
-        //                 }
-        //             }
-        //         } else {
-        //             return response()->json([
-        //                 'status' => 400,
-        //                 'title' => 'Error!',
-        //                 'message' => 'นามสกุลไฟล์ของคุณไม่ถูกต้องกรุณาใช้สกุลไฟล์ : .pdf',
-        //                 'icon' => 'error'
-        //             ]);
-        //         }
-        //     } else {
-        //         return response()->json([
-        //             'status' => 400,
-        //             'title' => 'Error!',
-        //             'message' => 'ไม่มีไฟล์ที่ส่งเข้ามา',
-        //             'icon' => 'error'
-        //         ]);
-        //     }
-		// } else{
-        //     if($fileName == '') {
-        //         if($request->hasFile('file')) {
-        //             $file = $request->file('file');
-        //             if($file) {
-        //                 $fileExtensions = $file->getClientOriginalExtension();
-        //                 $allowedExtensions = ['pdf'];
-        //                 if(in_array(strtolower($fileExtensions), $allowedExtensions)) {
-        //                     $fileName = time() . '.' . $fileExtensions;
-        //                     $file->storeAs('public/files/ita/66/itaSub2', $fileName);
+                            $validatorItaSub1ID = Validator::make($request->all(),[
+                                'itaSub1_id' => ['required', 'string', 'max:4', 'exists:ita_mains,id']
+                            ]);
 
-        //                     $validatorItaSub1ID = Validator::make($request->all(),[
-        //                         'itaSub1_id' => ['required', 'string', 'max:4', 'exists:ita_mains,id']
-        //                     ]);
+                            if($validatorItaSub1ID->fails()) {
+                                return response()->json([
+                                    'status' => 400,
+                                    'title' => 'Error!',
+                                    'message' => 'สามารถกรอกข้อมูลได้แค่ 4 ตัวอักษร',
+                                    'icon' => 'error'
+                                ]);
+                            } else {
+                                $validatorItaSub2Name = Validator::make($request->all(),[
+                                    'itaSub2_name' => ['required', 'string', 'max:200']
+                                ]);
 
-        //                     if($validatorItaSub1ID->fails()) {
-        //                         return response()->json([
-        //                             'status' => 400,
-        //                             'title' => 'Error!',
-        //                             'message' => 'สามารถกรอกข้อมูลได้แค่ 4 ตัวอักษร',
-        //                             'icon' => 'error'
-        //                         ]);
-        //                     } else {
-        //                         $validatorItaSub2Name = Validator::make($request->all(),[
-        //                             'itaSub2_name' => ['required', 'string', 'max:200']
-        //                         ]);
+                                if($validatorItaSub2Name->fails()) {
+                                    return response()->json([
+                                        'status' => 400,
+                                        'title' => 'Error!',
+                                        'message' => 'สามารถกรอกข้อมูลได้แค่ 200 ตัวอักษร',
+                                        'icon' => 'error'
+                                    ]);
+                                } else {
 
-        //                         if($validatorItaSub2Name->fails()) {
-        //                             return response()->json([
-        //                                 'status' => 400,
-        //                                 'title' => 'Error!',
-        //                                 'message' => 'สามารถกรอกข้อมูลได้แค่ 200 ตัวอักษร',
-        //                                 'icon' => 'error'
-        //                             ]);
-        //                         } else {
+                                }
+                            }
+                        } else {
+                            return response()->json([
+                                'status' => 400,
+                                'title' => 'Error!',
+                                'message' => 'นามสกุลไฟล์ของคุณไม่ถูกต้องกรุณาใช้สกุลไฟล์ : .pdf',
+                                'icon' => 'error'
+                            ]);
+                        }
+                    }
+                } else if($request->link) {
+                    $fileName = '';
 
-        //                         }
-        //                     }
-        //                 } else {
-        //                     return response()->json([
-        //                         'status' => 400,
-        //                         'title' => 'Error!',
-        //                         'message' => 'นามสกุลไฟล์ของคุณไม่ถูกต้องกรุณาใช้สกุลไฟล์ : .pdf',
-        //                         'icon' => 'error'
-        //                     ]);
-        //                 }
-        //             }
-        //         } else if($request->link) {
-        //             $fileName = '';
+                    if($itaSub2) {
+                        Storage::delete('public/files/ita/66/itaSub2/' . $itaSub2->file);
+                    } else {
+                        return response()->json([
+                            'status' => 400,
+                            'title' => 'Error!',
+                            'message' => 'ลบไฟล์เก่าไม่สำเร็จ',
+                            'icon' => 'error'
+                        ]);
+                    }
 
-        //             $itaSub2Data = [
-        //                 'itaSub1_id' => $request->itaSub1_id,
-        //                 'itaSub2_name' => $request->itaSub2_name,
-        //                 'file' => $fileName,
-        //                 'link' => $request->link
-        //             ];
+                    $itaSub2Data = [
+                        'itaSub1_id' => $request->itaSub1_id,
+                        'itaSub2_name' => $request->itaSub2_name,
+                        'file' => $fileName,
+                        'link' => $request->link
+                    ];
 
-        //             if($itaSub2Data) {
-        //                 $itaSub2->update($itaSub2Data);
-        //                 return response()->json([
-        //                     'status' => 200,
-        //                     'title' => 'Added!',
-        //                     'message' => 'Update ข้อมูลเสร็จสิ้น',
-        //                     'icon' => 'success'
-        //                 ]);
-        //             } else {
-        //                 return response()->json([
-        //                     'status' => 300,
-        //                     'title' => 'Error!',
-        //                     'message' => 'Update ข้อมูลไม่สำเร็จ',
-        //                     'icon' => 'error'
-        //                 ]);
-        //             }
-        //         } else {
-        //             $fileName = '';
-        //         }
-        //     } else {
-        //         $fileName = $request->itaSub2_file;
-        //     }
-		// }
+                    if($itaSub2Data) {
+                        $itaSub2->update($itaSub2Data);
+                        return response()->json([
+                            'status' => 200,
+                            'title' => 'Added!',
+                            'message' => 'Update ข้อมูลเสร็จสิ้น',
+                            'icon' => 'success'
+                        ]);
+                    } else {
+                        return response()->json([
+                            'status' => 300,
+                            'title' => 'Error!',
+                            'message' => 'Update ข้อมูลไม่สำเร็จ',
+                            'icon' => 'error'
+                        ]);
+                    }
+                } else {
+                    $fileName = '';
+                }
+            } else {
+                $fileName = $request->itaSub2_file;
+            }
+		}
+        $fileName = $request->itaSub2_file;
         $itaSub2Data = [
             'itaSub1_id' => $request->itaSub1_id,
             'itaSub2_name' => $request->itaSub2_name,
@@ -337,7 +369,7 @@ class itaSub2Controller extends Controller
             ]);
         } else {
             return response()->json([
-                'status' => 300,
+                'status' => 400,
                 'title' => 'Error!',
                 'message' => 'Update ข้อมูลไม่สำเร็จ',
                 'icon' => 'error'

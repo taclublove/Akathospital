@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreign('itaSub2_id')->references('id')->on('ita_sub_2s');
             $table->string('itaSub3_name');
             $table->string('file');
+            $table->string('link');
             $table->timestamps();
         });
     }

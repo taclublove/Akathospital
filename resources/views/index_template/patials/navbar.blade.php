@@ -1,4 +1,4 @@
-<div class="navbar bg-green-900 text-white fixed z-30" data-aos="fade-down" data-aos-duration="800" data-aos-easing="ease-in-sine">
+<div class="navbar bg-green-900 text-white fixed z-40" data-aos="fade-down" data-aos-duration="800" data-aos-easing="ease-in-sine">
     <div class="flex-1">
         <img class="w-10" src="https://co-vaccine.moph.go.th/assets/images/moph-logo.gif" alt="">
         <a class="btn btn-ghost normal-case text-xl">Akathospital</a>

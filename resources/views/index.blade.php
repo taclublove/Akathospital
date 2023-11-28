@@ -24,29 +24,6 @@
     </div>
     {{-- Heroes End --}}
 
-    {{-- Section Website ภายนอก Start --}}
-    {{-- <section class="container p-6 px-auto space-y-3 bg-white">
-        <div class="sm:flex items-center max-w-screen-xl">
-            <div class="sm:w-1/2 p-10 ms-[150px]">
-                <div class="image object-center text-center">
-                    <img src="{{ url('image/hospital_director/boss.jpg') }}">
-                </div>
-            </div>
-            <div class="sm:w-1/2 bg-base-300 p-5 rounded-lg">
-                <div class="text">
-                    <span class="text-gray-500 border-b-2 border-indigo-600 uppercase">About us</span>
-                    <h2 class="my-4 font-bold text-3xl  sm:text-4xl ">ผู้อำนวยการ<span
-                            class="text-indigo-600">โรงพยาบาลอากาศอำนวย</span>
-                    </h2>
-                    <p class="text-gray-700">
-                        นางจิรัฐติกาล สุตวณิชย์
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section> --}}
-    {{-- Section Website ภายนอก End --}}
-
     {{-- Boss Start --}}
     <div
         class="relative flex flex-col items-center mx-auto pb-[40px] lg:flex-row-reverse lg:max-w-5xl lg:mt-12 xl:max-w-6xl">
@@ -90,7 +67,7 @@
             <p class="text-center"></p>
 
             <div class="max-w-full">
-                <div class="grid gap-8 my-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6" data-aos="fade-up"
+                <div class="grid gap-8 my-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 " data-aos="fade-up"
                     data-aos-duration="600" data-aos-easing="ease-in-sine">
                     <!-- cards -->
                     <div class="w-full max-w-xs text-center hover:scale-110 ease-in-out duration-300">
@@ -242,6 +219,7 @@
     </section>
     {{-- Website ภายนอก End --}}
 
+    {{-- Slider Start --}}
     <div class="min-h-screen flex flex-col p-8 sm:p-16 md:p-24 justify-center bg-white">
         <!-- Themes: blue, purple and teal -->
         {{-- <div data-theme="teal" class="mx-auto max-w-6xl">
@@ -341,42 +319,66 @@
             </button>
         </div>
     </div>
+    {{-- Slider End --}}
 
-
-
-
-
-
-    {{-- Slider Start --}}
-    {{-- <div class="slider_img">
-        <div class="over-lay py-[10px]">
-            <div class="sliderAx h-auto container px-[40px] py-[20px]">
-                <div id="slider-1" class="container mx-auto flex items-center justify-center ">
-                    <div class="bg-cover bg-center  h-[800px] w-[1200px] text-white py-[10px] px-10 object-cover ">
-                        <img src="{{ url('image/Slider_show/03.jpg') }}" class="w-[100%] h-[100%] object-cover" alt="">
-                    </div>
-                    <br>
-                </div>
-                <div id="slider-2" class="container mx-auto flex items-center justify-center">
-                    <div
-                        class="bg-cover bg-top  h-[800px] w-[1200px] text-white py-[10px] px-10 object-cover">
-                        <img src="{{ url('image/Slider_Show/43.jpg') }}" class="w-[100%] h-[100%] object-cover" alt="">
-                    </div>
-                    <br>
-                </div>
+    {{-- <div data-dial-init class="fixed end-10 bottom-[4rem] group z-30">
+        <div id="speed-dial-menu-default" class="flex flex-col items-center hidden mb-4 space-y-2">
+            <button type="button" data-tooltip-target="tooltip-share" data-tooltip-placement="left" class="flex justify-center items-center w-[52px] h-[52px] text-gray-500 hover:text-gray-900 bg-white rounded-full border border-gray-200 dark:border-gray-600 shadow-sm dark:hover:text-white dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400">
+                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
+                    <path d="M14.419 10.581a3.564 3.564 0 0 0-2.574 1.1l-4.756-2.49a3.54 3.54 0 0 0 .072-.71 3.55 3.55 0 0 0-.043-.428L11.67 6.1a3.56 3.56 0 1 0-.831-2.265c.006.143.02.286.043.428L6.33 6.218a3.573 3.573 0 1 0-.175 4.743l4.756 2.491a3.58 3.58 0 1 0 3.508-2.871Z"/>
+                </svg>
+                <span class="sr-only">Share</span>
+            </button>
+            <div id="tooltip-share" role="tooltip" class="absolute z-10 invisible inline-block w-auto px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                Share
+                <div class="tooltip-arrow" data-popper-arrow></div>
             </div>
-            <div class="flex justify-between w-12 mx-auto pb-2 ">
-                <button id="sButton1" onclick="sliderButton1()" class="bg-purple-400 rounded-full w-4 pb-2 "></button>
-                <button id="sButton2" onclick="sliderButton2() " class="bg-purple-400 rounded-full w-4 p-2"></button>
+            <button type="button" data-tooltip-target="tooltip-print" data-tooltip-placement="left" class="flex justify-center items-center w-[52px] h-[52px] text-gray-500 hover:text-gray-900 bg-white rounded-full border border-gray-200 dark:border-gray-600 shadow-sm dark:hover:text-white dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400">
+                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M5 20h10a1 1 0 0 0 1-1v-5H4v5a1 1 0 0 0 1 1Z"/>
+                    <path d="M18 7H2a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2v-3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2Zm-1-2V2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v3h14Z"/>
+                </svg>
+                <span class="sr-only">Print</span>
+            </button>
+            <div id="tooltip-print" role="tooltip" class="absolute z-10 invisible inline-block w-auto px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                Print
+                <div class="tooltip-arrow" data-popper-arrow></div>
+            </div>
+            <button type="button" data-tooltip-target="tooltip-download" data-tooltip-placement="left" class="flex justify-center items-center w-[52px] h-[52px] text-gray-500 hover:text-gray-900 bg-white rounded-full border border-gray-200 dark:border-gray-600 shadow-sm dark:hover:text-white dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400">
+                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M14.707 7.793a1 1 0 0 0-1.414 0L11 10.086V1.5a1 1 0 0 0-2 0v8.586L6.707 7.793a1 1 0 1 0-1.414 1.414l4 4a1 1 0 0 0 1.416 0l4-4a1 1 0 0 0-.002-1.414Z"/>
+                    <path d="M18 12h-2.55l-2.975 2.975a3.5 3.5 0 0 1-4.95 0L4.55 12H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2Zm-3 5a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/>
+                </svg>
+                <span class="sr-only">Download</span>
+            </button>
+            <div id="tooltip-download" role="tooltip" class="absolute z-10 invisible inline-block w-auto px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                Download
+                <div class="tooltip-arrow" data-popper-arrow></div>
+            </div>
+            <button type="button" data-tooltip-target="tooltip-copy" data-tooltip-placement="left" class="flex justify-center items-center w-[52px] h-[52px] text-gray-500 hover:text-gray-900 bg-white rounded-full border border-gray-200 dark:border-gray-600 dark:hover:text-white shadow-sm dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400">
+                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
+                    <path d="M5 9V4.13a2.96 2.96 0 0 0-1.293.749L.879 7.707A2.96 2.96 0 0 0 .13 9H5Zm11.066-9H9.829a2.98 2.98 0 0 0-2.122.879L7 1.584A.987.987 0 0 0 6.766 2h4.3A3.972 3.972 0 0 1 15 6v10h1.066A1.97 1.97 0 0 0 18 14V2a1.97 1.97 0 0 0-1.934-2Z"/>
+                    <path d="M11.066 4H7v5a2 2 0 0 1-2 2H0v7a1.969 1.969 0 0 0 1.933 2h9.133A1.97 1.97 0 0 0 13 18V6a1.97 1.97 0 0 0-1.934-2Z"/>
+                </svg>
+                <span class="sr-only">Copy</span>
+            </button>
+            <div id="tooltip-copy" role="tooltip" class="absolute z-10 invisible inline-block w-auto px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                Copy
+                <div class="tooltip-arrow" data-popper-arrow></div>
             </div>
         </div>
+        <button type="button" data-dial-toggle="speed-dial-menu-default" aria-controls="speed-dial-menu-default" aria-expanded="false" class="flex items-center justify-center text-white bg-blue-700 rounded-full w-14 h-14 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800">
+            <svg class="w-5 h-5 transition-transform group-hover:rotate-45" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+            </svg>
+            <span class="sr-only">Open actions menu</span>
+        </button>
     </div> --}}
-    {{-- Slider End --}}
 
     {{-- ข่าวต่างๆ Start --}}
     <div class="bg-boss">
         <div class="max-w-full px-[40px] py-[40px] over-lay">
-            <div class="flex border-b border-gray-300 grid grid-cols-4 w-full">
+            {{-- <div class="flex border-b border-gray-300 grid grid-cols-4 w-full">
                 <button
                     class="w-full py-4 text-center font-medium text-gray-700 bg-gray-100 rounded-tl-lg focus:bg-gray-300 active:bg-gray-300"
                     onclick="openTab(event, 'tab1')">ประกาศจัดซื้อจัดจ้าง</button>
@@ -713,129 +715,138 @@
                             width="1216" height="640">
                     </li>
                 </ul>
+            </div> --}}
+
+            <div class="mb-4 border-gray-200 dark:border-gray-700">
+                <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist">
+                    <li class="me-2" role="presentation">
+                        <button class="inline-block p-4 border-b-2 rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">กิจกกรม</button>
+                    </li>
+                    <li class="me-2" role="presentation">
+                        <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">Dashboard</button>
+                    </li>
+                    <li class="me-2" role="presentation">
+                        <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Settings</button>
+                    </li>
+                    <li role="presentation">
+                        <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="contacts-tab" data-tabs-target="#contacts" type="button" role="tab" aria-controls="contacts" aria-selected="false">Contacts</button>
+                    </li>
+                </ul>
             </div>
+            <div id="default-tab-content">
+                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    {{-- <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Profile tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p> --}}
+                    <h1 class="my-3">กิจกรรม</h1>
+                    <li class="relative flex flex-col sm:flex-row xl:flex-row items-start">
+                        <div class="order-1 sm:ml-3 xl:ml-3">
+                            <h3 class="mb-1 text-dark font-semibold dark:text-slate-200">
+                                <span class="mb-1 block text-sm leading-6 text-indigo-500">Headless UI</span>Completely
+                                unstyled, fully
+                                accessible UI components
+                            </h3>
+                            <div class="prose prose-slate prose-sm text-dark dark:prose-dark">
+                                <p>Completely unstyled, fully accessible UI components, designed to integrate beautifully with
+                                    Tailwind
+                                    CSS.</p>
+                            </div><a
+                                class="group inline-flex items-center h-9 rounded-full text-sm font-semibold whitespace-nowrap px-3 focus:outline-none focus:ring-2 bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-900 focus:ring-slate-500 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600 dark:hover:text-white dark:focus:ring-slate-500 mt-6"
+                                href="https://headlessui.dev">Learn
+                                more<span class="sr-only">, Completely unstyled, fully accessible UI components</span><svg
+                                    class="overflow-visible ml-3 text-slate-300 group-hover:text-slate-400 dark:text-slate-500 dark:group-hover:text-slate-400"
+                                    width="3" height="6" viewBox="0 0 3 6" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M0 0L3 3L0 6"></path>
+                                </svg></a>
+                        </div><img src="https://tailwindcss.com/_next/static/media/headlessui@75.c1d50bc1.jpg" alt=""
+                            class="mb-6 shadow-md rounded-lg bg-slate-50 w-full sm:w-[17rem] sm:mb-0 xl:mb-6 xl:w-[17rem]"
+                            width="1216" height="640">
+                    </li>
+                </div>
+                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+                    {{-- <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Dashboard tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p> --}}
+                    <li class="relative flex flex-col sm:flex-row xl:flex-row items-start">
+                        <div class="order-1 sm:ml-3 xl:ml-3">
+                            <h3 class="mb-1 text-dark font-semibold dark:text-slate-200">
+                                <span class="mb-1 block text-sm leading-6 text-indigo-500">Headless UI</span>Completely
+                                unstyled, fully
+                                accessible UI components
+                            </h3>
+                            <div class="prose prose-slate prose-sm text-dark dark:prose-dark">
+                                <p>Completely unstyled, fully accessible UI components, designed to integrate beautifully with
+                                    Tailwind
+                                    CSS.</p>
+                            </div><a
+                                class="group inline-flex items-center h-9 rounded-full text-sm font-semibold whitespace-nowrap px-3 focus:outline-none focus:ring-2 bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-900 focus:ring-slate-500 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600 dark:hover:text-white dark:focus:ring-slate-500 mt-6"
+                                href="https://headlessui.dev">Learn
+                                more<span class="sr-only">, Completely unstyled, fully accessible UI components</span><svg
+                                    class="overflow-visible ml-3 text-slate-300 group-hover:text-slate-400 dark:text-slate-500 dark:group-hover:text-slate-400"
+                                    width="3" height="6" viewBox="0 0 3 6" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M0 0L3 3L0 6"></path>
+                                </svg></a>
+                        </div><img src="https://tailwindcss.com/_next/static/media/headlessui@75.c1d50bc1.jpg" alt=""
+                            class="mb-6 shadow-md rounded-lg bg-slate-50 w-full sm:w-[17rem] sm:mb-0 xl:mb-6 xl:w-[17rem]"
+                            width="1216" height="640">
+                    </li>
+                </div>
+                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                    {{-- <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Settings tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p> --}}
+                    <li class="relative flex flex-col sm:flex-row xl:flex-row items-start">
+                        <div class="order-1 sm:ml-3 xl:ml-3">
+                            <h3 class="mb-1 text-dark font-semibold dark:text-slate-200">
+                                <span class="mb-1 block text-sm leading-6 text-indigo-500">Headless UI</span>Completely
+                                unstyled, fully
+                                accessible UI components
+                            </h3>
+                            <div class="prose prose-slate prose-sm text-dark dark:prose-dark">
+                                <p>Completely unstyled, fully accessible UI components, designed to integrate beautifully with
+                                    Tailwind
+                                    CSS.</p>
+                            </div><a
+                                class="group inline-flex items-center h-9 rounded-full text-sm font-semibold whitespace-nowrap px-3 focus:outline-none focus:ring-2 bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-900 focus:ring-slate-500 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600 dark:hover:text-white dark:focus:ring-slate-500 mt-6"
+                                href="https://headlessui.dev">Learn
+                                more<span class="sr-only">, Completely unstyled, fully accessible UI components</span><svg
+                                    class="overflow-visible ml-3 text-slate-300 group-hover:text-slate-400 dark:text-slate-500 dark:group-hover:text-slate-400"
+                                    width="3" height="6" viewBox="0 0 3 6" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M0 0L3 3L0 6"></path>
+                                </svg></a>
+                        </div><img src="https://tailwindcss.com/_next/static/media/headlessui@75.c1d50bc1.jpg" alt=""
+                            class="mb-6 shadow-md rounded-lg bg-slate-50 w-full sm:w-[17rem] sm:mb-0 xl:mb-6 xl:w-[17rem]"
+                            width="1216" height="640">
+                    </li>
+                </div>
+                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
+                    {{-- <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Contacts tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p> --}}
+                    <li class="relative flex flex-col sm:flex-row xl:flex-row items-start">
+                        <div class="order-1 sm:ml-3 xl:ml-3">
+                            <h3 class="mb-1 text-dark font-semibold dark:text-slate-200">
+                                <span class="mb-1 block text-sm leading-6 text-indigo-500">Headless UI</span>Completely
+                                unstyled, fully
+                                accessible UI components
+                            </h3>
+                            <div class="prose prose-slate prose-sm text-dark dark:prose-dark">
+                                <p>Completely unstyled, fully accessible UI components, designed to integrate beautifully with
+                                    Tailwind
+                                    CSS.</p>
+                            </div><a
+                                class="group inline-flex items-center h-9 rounded-full text-sm font-semibold whitespace-nowrap px-3 focus:outline-none focus:ring-2 bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-900 focus:ring-slate-500 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600 dark:hover:text-white dark:focus:ring-slate-500 mt-6"
+                                href="https://headlessui.dev">Learn
+                                more<span class="sr-only">, Completely unstyled, fully accessible UI components</span><svg
+                                    class="overflow-visible ml-3 text-slate-300 group-hover:text-slate-400 dark:text-slate-500 dark:group-hover:text-slate-400"
+                                    width="3" height="6" viewBox="0 0 3 6" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M0 0L3 3L0 6"></path>
+                                </svg></a>
+                        </div><img src="https://tailwindcss.com/_next/static/media/headlessui@75.c1d50bc1.jpg" alt=""
+                            class="mb-6 shadow-md rounded-lg bg-slate-50 w-full sm:w-[17rem] sm:mb-0 xl:mb-6 xl:w-[17rem]"
+                            width="1216" height="640">
+                    </li>
+                </div>
+            </div>
+
         </div>
     </div>
     {{-- ข่าวต่างๆ End --}}
 
-    {{-- <div class="container px-[10rem] pt-[78px] pb-[20px]">
-        <h3 class="text-black text-bold antialiased bg-base-300 p-[10px] rounded-lg text-center text-lg">ข่าวประชาสัมพันธ์</h3>
-        <ul class="grid grid-cols-1 xl:grid-row-3 gap-y-10 gap-x-6 items-start p-8">
-            <li class="relative flex flex-col sm:flex-row xl:flex-row items-start">
-                <div class="order-1 sm:ml-3 xl:ml-3">
-                    <h3 class="mb-1 text-slate-900 font-semibold dark:text-slate-200">
-                        <span class="mb-1 block text-sm leading-6 text-indigo-500">Headless UI</span>Completely unstyled, fully
-                        accessible UI components</h3>
-                    <div class="prose prose-slate prose-sm text-slate-600 dark:prose-dark">
-                        <p>Completely unstyled, fully accessible UI components, designed to integrate beautifully with Tailwind
-                            CSS.</p>
-                    </div><a
-                        class="group inline-flex items-center h-9 rounded-full text-sm font-semibold whitespace-nowrap px-3 focus:outline-none focus:ring-2 bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-900 focus:ring-slate-500 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600 dark:hover:text-white dark:focus:ring-slate-500 mt-6"
-                        href="https://headlessui.dev">Learn
-                        more<span class="sr-only">, Completely unstyled, fully accessible UI components</span><svg
-                            class="overflow-visible ml-3 text-slate-300 group-hover:text-slate-400 dark:text-slate-500 dark:group-hover:text-slate-400"
-                            width="3" height="6" viewBox="0 0 3 6" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M0 0L3 3L0 6"></path>
-                        </svg></a>
-                </div><img src="https://tailwindcss.com/_next/static/media/headlessui@75.c1d50bc1.jpg" alt="" class="mb-6 shadow-md rounded-lg bg-slate-50 w-full sm:w-[17rem] sm:mb-0 xl:mb-6 xl:w-[17rem]" width="1216" height="640">
-            </li>
-            <li class="relative flex flex-row sm:flex-row xl:flex-row items-start">
-                <div class="order-1 sm:ml-6 xl:ml-6">
-                    <h3 class="mb-1 text-slate-900 font-semibold dark:text-slate-200">
-                        <span class="mb-1 block text-sm leading-6 text-purple-500">Heroicons</span>Beautiful hand-crafted SVG
-                        icons, by the makers of Tailwind CSS.</h3>
-                    <div class="prose prose-slate prose-sm text-slate-600 dark:prose-dark">
-                        <p>A set of 450+ free MIT-licensed SVG icons. Available as basic SVG icons and via first-party React and
-                            Vue libraries.</p>
-                    </div><a
-                        class="group inline-flex items-center h-9 rounded-full text-sm font-semibold whitespace-nowrap px-3 focus:outline-none focus:ring-2 bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-900 focus:ring-slate-500 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600 dark:hover:text-white dark:focus:ring-slate-500 mt-6"
-                        href="https://heroicons.com">Learn
-                        more<span class="sr-only">, Beautiful hand-crafted SVG icons, by the makers of Tailwind CSS.</span><svg
-                            class="overflow-visible ml-3 text-slate-300 group-hover:text-slate-400 dark:text-slate-500 dark:group-hover:text-slate-400"
-                            width="3" height="6" viewBox="0 0 3 6" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M0 0L3 3L0 6"></path>
-                        </svg></a>
-                </div><img src="https://tailwindcss.com/_next/static/media/heroicons@75.4a558f35.jpg" alt="" class="mb-6 shadow-md rounded-lg bg-slate-50 w-full sm:w-[17rem] sm:mb-0 xl:mb-6 xl:w-[17rem]" width="1216" height="640">
-            </li>
-            <li class="relative flex flex-col sm:flex-row xl:flex-row items-start">
-                <div class="order-1 sm:ml-6 xl:ml-6">
-                    <h3 class="mb-1 text-slate-900 font-semibold dark:text-slate-200">
-                        <span class="mb-1 block text-sm leading-6 text-cyan-500">Hero Patterns</span>Seamless SVG background
-                        patterns by the makers of Tailwind CSS.</h3>
-                    <div class="prose prose-slate prose-sm text-slate-600 dark:prose-dark">
-                        <p>A collection of over 100 free MIT-licensed high-quality SVG patterns for you to use in your web
-                            projects.</p>
-                    </div><a
-                        class="group inline-flex items-center h-9 rounded-full text-sm font-semibold whitespace-nowrap px-3 focus:outline-none focus:ring-2 bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-900 focus:ring-slate-500 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600 dark:hover:text-white dark:focus:ring-slate-500 mt-6"
-                        href="https://heropatterns.com">Learn
-                        more<span class="sr-only">, Seamless SVG background patterns by the makers of Tailwind CSS.</span><svg
-                            class="overflow-visible ml-3 text-slate-300 group-hover:text-slate-400 dark:text-slate-500 dark:group-hover:text-slate-400"
-                            width="3" height="6" viewBox="0 0 3 6" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M0 0L3 3L0 6"></path>
-                        </svg></a>
-                </div><img src="https://tailwindcss.com/_next/static/media/heropatterns@75.82a09697.jpg" alt="" class="mb-6 shadow-md rounded-lg bg-slate-50 w-full sm:w-[17rem] sm:mb-0 xl:mb-6 xl:w-[17rem]" width="1216" height="640">
-            </li>
-        </ul>
-    </div> --}}
-
-    {{-- Start --}}
-    {{-- <section class="container mx-auto mt-5 mb-5">
-        <div class="grid grid-cols-5 gap-5">
-            <div class="bg-indigo-500 h-[100px] rounded-lg shadow-lg"><a href="#" class="flex items-center justify-center">Backoffice</a></div>
-            <div class="bg-indigo-500 h-[100px] rounded-lg shadow-lg"></div>
-            <div class="bg-indigo-500 h-[100px] rounded-lg shadow-lg"></div>
-            <div class="bg-indigo-500 h-[100px] rounded-lg shadow-lg"></div>
-            <div class="bg-indigo-500 h-[100px] rounded-lg shadow-lg"></div>
-        </div>
-    </section> --}}
-    {{-- End --}}
-
-    {{-- <div class="grid grid-cols-1 gap-3 p-4 mx-auto bg-gray-300">
-        <div class="text-white flex w-100 h-96">
-            <div class="none-scroll bg-yellow-500 p-8 w-4/5 overflow-scroll rounded-lg shadow-2xl">
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo nihil saepe temporibus dignissimos, fugit accusamus perferendis voluptate mollitia quod culpa adipisci deserunt, vero suscipit autem hic tenetur. Id neque at itaque mollitia a maiores repellendus beatae omnis et perspiciatis rem deleniti dolorem suscipit accusamus dignissimos ad recusandae animi modi, soluta corrupti magnam eius? Totam facere unde veniam voluptatum perspiciatis porro quae nemo, repellat ad voluptas ipsam suscipit beatae modi, dolorem animi assumenda a odio placeat non ipsa officia! Sed libero molestiae, veritatis vitae id voluptatem rem commodi mollitia cumque nobis ipsam? Necessitatibus nobis consectetur soluta, repellat culpa deserunt dolore, officia suscipit itaque minus enim iusto dignissimos dolor tempore! Voluptatibus similique debitis quidem eaque fugit, ab deleniti earum sed ipsa, nesciunt iusto voluptate illum eveniet tempora sunt neque, perspiciatis soluta vitae iure optio? Aliquid doloribus, unde laborum sequi sapiente ea commodi asperiores possimus labore facilis nobis rem? Omnis illum ex non ratione assumenda error eaque, iste natus voluptatibus accusantium ipsum libero fuga facere corrupti nihil id delectus explicabo doloribus nulla dignissimos sit. Quam pariatur saepe veritatis explicabo molestiae animi officia repudiandae vitae tenetur voluptates adipisci voluptate vel porro accusantium quae accusamus quos iste, quas rerum libero quaerat modi labore assumenda! Quam numquam cupiditate vero nemo! In error mollitia corporis culpa quisquam voluptate laborum ab obcaecati numquam perferendis doloremque, veritatis voluptas eveniet dolor voluptatem iste architecto fugiat autem quasi suscipit labore, sed cum neque nihil! Hic labore ab nisi dolorum ullam eos iusto reiciendis nihil soluta repudiandae mollitia asperiores, unde at illum ipsam. Sint nihil aliquid quas ut veniam laudantium magni, beatae non quam reiciendis repudiandae minima repellendus saepe numquam vel amet, omnis minus delectus alias voluptate perferendis? Animi fugit a ad ab vel, nihil dolorum reprehenderit quis nisi repellat itaque veritatis dignissimos voluptates in dolore. Magni nesciunt nemo optio. Quod dolor quia recusandae veniam quidem molestias ex unde obcaecati, perspiciatis adipisci quasi possimus. Error quas iste in explicabo temporibus ipsam, a obcaecati ex dolorum aut cumque laboriosam assumenda perferendis? Odit repellat tempora deserunt reprehenderit enim numquam? Ullam, hic consequatur. Harum amet fuga tempore itaque non libero voluptatibus, cumque laudantium numquam labore reiciendis quisquam dolore sequi a soluta. Eaque quo necessitatibus iusto ea libero quisquam laborum consectetur esse nemo, dicta quis blanditiis aspernatur enim nihil omnis? Quae, rerum? Non quasi optio nam animi, iure, possimus reiciendis repellat laborum iste corrupti illum dolor rem corporis, nisi necessitatibus sit officiis fuga? Vero ducimus maiores nemo necessitatibus dignissimos voluptate iure accusantium architecto libero ipsa ea ex nobis animi, eius nihil obcaecati expedita deserunt ad dolorem voluptatibus accusamus labore, quod doloribus? Ipsa earum hic incidunt? Impedit possimus laudantium voluptates odit sed aperiam sapiente, sunt nisi sequi, explicabo soluta modi assumenda officia inventore a, corrupti cum consequatur nulla adipisci nihil consequuntur deleniti! Placeat culpa ipsum tempore dignissimos provident eius quis, quod laboriosam eligendi quia recusandae rem repudiandae pariatur voluptatum perspiciatis minus deserunt error nesciunt eaque assumenda? Porro corrupti natus officiis illo optio, consequatur alias, libero, praesentium suscipit deserunt est! Iusto iure perspiciatis officiis recusandae nostrum corporis dolorum, ratione esse vel ipsa nobis, consectetur molestias id? Natus architecto voluptatum nulla sint quia ea ipsa numquam ducimus cupiditate deserunt maiores, veritatis ex incidunt neque eius fuga. Ducimus, tenetur ab. Beatae doloremque ratione maiores dolor amet ea distinctio fuga iure, repellendus tenetur, eum itaque id, at et quaerat non repellat dolorum aperiam libero totam cumque numquam! Rerum aut aliquid labore pariatur error sint consequatur amet. Quis reprehenderit odit inventore doloribus nulla, voluptate delectus ex, eligendi ullam, laudantium excepturi neque in nostrum commodi aliquam quia adipisci molestiae culpa porro vero aperiam! Nesciunt quis, magnam, labore corrupti odit libero provident sit voluptate dicta totam officia! Velit reiciendis porro doloremque earum totam, quia maxime voluptatibus unde eaque animi dolore temporibus quasi veniam, beatae ipsam repellendus sequi fuga minima ullam consequuntur laboriosam ea. Iste enim ratione, numquam nostrum, similique dicta dignissimos cupiditate aliquam quam rerum quod amet consequuntur. Nobis maxime beatae provident rem impedit totam odit fugiat tempora aliquid omnis eligendi mollitia ipsam qui sed explicabo in cum ipsa unde dignissimos facilis, expedita natus eos vero nostrum. Quas adipisci reprehenderit doloremque aut, labore officia aliquid? Nobis quos labore officia ducimus reiciendis sequi consequatur rerum libero dignissimos sit fuga nihil aspernatur impedit voluptatum architecto soluta error saepe, doloremque explicabo. Sed perferendis quo maxime esse corrupti! Corrupti harum cupiditate voluptatibus sequi, molestias asperiores qui earum nam sunt, doloribus quia possimus deleniti accusamus quidem facilis provident dolorem, expedita maxime eius! Aliquam deserunt repellat saepe, aut quaerat quas laborum tempore laudantium blanditiis voluptatem fuga expedita molestias nobis veritatis facilis cum ea reprehenderit in officiis quia ut aspernatur voluptatibus rem nostrum! Molestiae enim maiores facere consectetur veritatis assumenda qui iure voluptatem! Expedita obcaecati nobis dolorum sunt neque beatae quae dolorem dolor quod hic unde facere, delectus eum perspiciatis totam temporibus a tenetur laudantium inventore molestiae veniam optio est pariatur maiores! Nostrum enim, saepe voluptas vel rerum non, accusamus aut cum id, repellendus labore eligendi quisquam neque natus tenetur tempora ducimus recusandae maxime consectetur dolorem perspiciatis. Commodi hic quibusdam deserunt, excepturi doloribus quae. Repudiandae voluptatum, veritatis labore modi tenetur fugit deserunt laboriosam quis impedit? Nisi vitae est tempora porro laudantium obcaecati quidem qui quasi, aut corrupti impedit sit praesentium eaque iste suscipit velit maiores harum perferendis neque pariatur a iusto magni incidunt illum? Dolore, totam fuga harum molestiae deserunt saepe quisquam hic numquam culpa iure esse asperiores, vero recusandae dolorem inventore ipsam corporis! Placeat esse recusandae, optio similique error debitis veritatis suscipit eius ducimus repudiandae, in exercitationem temporibus nemo ratione quaerat? Fugit sit vel incidunt! Sunt nulla, fugiat quam ipsa impedit commodi nesciunt autem earum fuga cum nemo molestiae aperiam! Perferendis velit, pariatur assumenda qui magni nisi dignissimos ut at, beatae exercitationem soluta. Odit illo expedita dolore aut distinctio non illum at officiis earum aliquam rem vero itaque voluptate doloribus repellendus ex impedit, perferendis ullam reprehenderit, perspiciatis eius nihil architecto assumenda. Sint consequatur cumque saepe, cupiditate aliquid, at culpa reprehenderit totam doloremque neque tempora, ducimus omnis voluptatem perferendis voluptates? Nobis tenetur inventore non recusandae obcaecati minus iusto vitae voluptatem eligendi.</p>
-            </div>
-            <div class="none-scroll bg-green-900 ms-10 w-1/5 p-4 overflow-auto shadow-2xl rounded-lg text-white">
-                @include('index_template.patials.menuBar')
-            </div>
-        </div>
-    </div> --}}
-
-    {{-- Hero Start --}}
-    {{-- <section>
-        <div class="hero min-h-screen bg-gray-100 w-full mx-auto">
-            <div class="hero-content flex-col lg:flex-row-reverse">
-                <img src="http://akathospital.com/assets/images/directors/boss.jpg"
-                    class="max-w-sm rounded-lg shadow-2xl hover:scale-125 ease-in-out duration-300" />
-                <div class="">
-                    <h1 class="text-5xl font-bold">โรงพยาบาลอากาศอำนวย</h1>
-                    <h3 class="text-2xl mt-3 text-blue-500 font-bold">ค่านิยม(Values) : SMILE</h3>
-                    <p class="py-2"><span class="text-blue-500 font-bold">S : Safety</span>
-                        ผู้รับและผู้ให้บริการปลอดภัยและมีคุณภาพ</p>
-                    <p class="py-2"><span class="text-green-500 font-bold">M : Mind and moral</span>
-                        บริการด้วยหัวใจความเป็นมนุษย์ ด้วยคุณธรรมจริยธรรม</p>
-                    <p class="py-2"><span class="text-yellow-500 font-bold">I : Information and innovation</span>
-                        ระบบสารสนเทศและนวัตกรรม</p>
-                    <p class="py-2"><span class="text-black-500 font-bold">L : Learning Organization</span>
-                        เราต้องเป็นองค์กรแห่งการเรียนรู้อยู่เสมอ</p>
-                    <p class="py-2"><span class="text-red-500 font-bold">E : Empowerment มีการเสริมแรง</span>
-                        ให้กำลังใจแก่ผู้ให้บริการมีความสุข ยุทธศาสตร์การพัฒนาคุณภาพโรงพยาบาล <br>
-                        ยุทธศาสตร์ที่ 1 พัฒนาระบบบริการให้มีคุณภาพและมีประสิทธิภาพ ยุทธศาสตร์ที่ 2
-                        ส่งเสริมและพัฒนาสิ่งแวดล้อม <br>
-                        ที่ปลอดภัยเอื้อต่อการมีสุขภาพดี ยุทธศาสตร์ที่ 3
-                        การสร้างและพัฒนาส่งเสริมภาคีเครือข่ายในการให้บริการด้านสาธารณสุข <br>
-                        ครอบคลุมทุกมิติ ยุทธศาสตร์ที่ 4 การส่งเสริมให้เกิดการเรียนรู้และสร้างนวัตกรรมในองค์กร
-                        ยุทธศาสตร์ที่ 5 ส่งเสริมให้เจ้า <br>
-                        หน้าที่มีสุขภาพดีมีความสุขในการทำงาน ยุทธศาสตร์ที่ 6
-                        การพัฒนาและส่งเสริมงานด้านเทคโนโลยีและสารสนเทศ
-                    </p>
-                    <button class="btn btn-primary">Get Started</button>
-                </div>
-            </div>
-        </div>
-    </section> --}}
-    {{-- Hero End --}}
 @endsection

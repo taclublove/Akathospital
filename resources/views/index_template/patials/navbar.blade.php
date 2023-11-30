@@ -18,14 +18,18 @@
                                 <li><a href="{{ route('ita', ['id' => $fcy->fiscalYear_name ]) }}" class="hover:text-black hover:bg-base-100">ITA ปีงบประมาณ {{ $fcy->fiscalYear_name }}</a></li>
                             @endforeach
                             @foreach($mms->subMenuShow as $sms)
-                                <li><a href="{{ route('ita', ['id' => $sms->sub_menu_show_name ]) }}" class="hover:text-black hover:bg-base-100">{{ $sms->sub_menu_show_name }}</a></li>
+                                <li><a href="{{ route('prl', ['id' => $sms->sub_menu_show_name ]) }}"class="hover:text-black hover:bg-base-100">{{ $sms->sub_menu_show_name }}</a></li>
                             @endforeach
                         </ul>
                     @endif
                 </div>
+            @elseif($mms->link == '/')
+                <div class="dropdown dropdown-end ">
+                    <a href="{{ $mms->link }}" class="rounded-5 btn btn-ghost w-28 hover:scale-125 ease-in-out duration-300" >{{ $mms->main_menu_show_name }}</a>
+                </div>
             @elseif($mms->link != '')
                 <div class="dropdown dropdown-end ">
-                    <a href="{{ $mms->link }}" class="rounded-5 btn btn-ghost w-28 hover:scale-125 ease-in-out duration-300">{{ $mms->main_menu_show_name }}</a>
+                    <a href="{{ $mms->link }}" class="rounded-5 btn btn-ghost w-28 hover:scale-125 ease-in-out duration-300"  target="_blank" >{{ $mms->main_menu_show_name }}</a>
                 </div>
             @endif
         @endforeach

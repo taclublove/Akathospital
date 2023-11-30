@@ -19,6 +19,7 @@ use App\Http\Controllers\admin\mainMenuShowController;
 use App\Http\Controllers\admin\subMenuShowController;
 use App\Http\Controllers\organizationHistoryController;
 use App\Http\Controllers\executiveCommitteeController;
+use App\Http\Controllers\pressReleaseController;
 use App\Http\Controllers\vmvsController;
 use App\Http\Controllers\itaController;
 
@@ -176,6 +177,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 Route::get('/organizationHistory', [organizationHistoryController::class, 'index'])->name('organizationHistory');
 Route::get('/executiveCommittee', [executiveCommitteeController::class, 'index'])->name('executiveCommittee');
+Route::get('/prl/{id}', [pressReleaseController::class, 'index'])->name('prl');
 Route::get('/vmvs', [vmvsController::class, 'index'])->name('vmvs');
 Route::get('/ita/{id}', [itaController::class, 'index'])->name('ita');
 

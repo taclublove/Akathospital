@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 // use Illuminate\Http\Request;
+use App\Models\SubMenuShow;
 
 class pressReleaseController extends Controller
 {
     public function index() {
-        return view('index_template.press_release.press_release');
+        $subMenuShow = SubMenuShow::all();
+        return view('index_template.pressRelease.prl', compact('subMenuShow'));
     }
 }

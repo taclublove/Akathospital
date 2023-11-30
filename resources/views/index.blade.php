@@ -220,7 +220,7 @@
     {{-- Website ภายนอก End --}}
 
     {{-- Slider Start --}}
-    <div class="min-h-screen flex flex-col p-8 sm:p-16 md:p-24 justify-center bg-white">
+    <div class="w-100 min-h-screen flex flex-col p-8 sm:p-16 md:p-24 justify-center bg-white">
         <!-- Themes: blue, purple and teal -->
         {{-- <div data-theme="teal" class="mx-auto max-w-6xl">
             <h2 class="sr-only">Featured case study</h2>
@@ -268,9 +268,9 @@
                 </div>
             </section>
         </div> --}}
-        <div id="default-carousel" class="relative w-[1350px] " data-carousel="slide">
+        <div id="default-carousel" class="relative w-[100%] " data-carousel="slide">
             <!-- Carousel wrapper -->
-            <div class="relative h-[600px] overflow-hidden rounded-lg md:h-[600px]">
+            <div class="relative h-[600px] overflow-hidden rounded-lg md:h-[700px]">
                 <!-- Item 1 -->
                 <div class="hidden duration-700 ease-in-out" data-carousel-item>
                     <img src="http://akathospital.com/assets/images/slider/6511.jpg" class="absolute block w-[100%] h-[100%] -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">

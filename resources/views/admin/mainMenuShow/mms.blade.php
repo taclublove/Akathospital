@@ -35,15 +35,15 @@
                         </div>
                     </div>
 
-                    <div class="mb-3" style="margin-left: 10rem;" id="form-link">
+                    <div class="mb-3 mt-3" style="margin-left: 10rem;" id="form-link">
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
                             <label class="form-check-label" for="inlineRadio1">ต้องการเพิ่ม Link</label>
                         </div>
-                        <div class="form-check form-check-inline">
+                        {{-- <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
                             <label class="form-check-label" for="inlineRadio2">ไม่ต้องการเพิ่ม Link</label>
-                        </div>
+                        </div> --}}
                     </div>
 
                     <div class="row mb-3" id="showInputLink">

@@ -5,6 +5,12 @@
     @include('index_template.patials_show.head')
 
     @yield('head')
+    <style>
+        a.active {
+            color: #000;
+            background-color: rgb(243 244 246);
+        }
+    </style>
 </head>
 
 <body class="none-scroll">
@@ -22,6 +28,40 @@
             </div> --}}
         </main>
     </div>
+
+    <script>
+        // Add this script in your Blade template or a separate JavaScript file
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get all buttons with the 'data-collapse-toggle' attribute
+            var buttons = document.querySelectorAll('[data-collapse-toggle]');
+
+            // Iterate through each button
+            buttons.forEach(function (button) {
+                // Get the target dropdown based on the 'aria-controls' attribute
+                var targetId = button.getAttribute('aria-controls');
+                var targetDropdown = document.getElementById(targetId);
+
+                // Check if the button has the 'active' class
+                var isActive = button.classList.contains('active');
+
+                // If active, show the dropdown
+                if (isActive) {
+                    targetDropdown.classList.remove('hidden');
+                }
+
+                // Add click event listener to each button
+                button.addEventListener('click', function () {
+                    // Toggle the 'hidden' class on the target dropdown
+                    targetDropdown.classList.toggle('hidden');
+                });
+            });
+        });
+    </script>
+
+
+
+
 
 </body>
 </html>

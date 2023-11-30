@@ -1,9 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-// use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
-// use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\adminDashboardController;
 use App\Http\Controllers\admin\procurementAnnouncementController;
 use App\Http\Controllers\admin\sexController;
@@ -17,6 +15,7 @@ use App\Http\Controllers\admin\itaSub2Controller;
 use App\Http\Controllers\admin\itaSub3Controller;
 use App\Http\Controllers\admin\itaSub4Controller;
 use App\Http\Controllers\admin\showPDFController;
+use App\Http\Controllers\admin\mainMenuShowController;
 use App\Http\Controllers\organizationHistoryController;
 use App\Http\Controllers\executiveCommitteeController;
 use App\Http\Controllers\pressReleaseController;
@@ -152,6 +151,15 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/itaSub4Edit', [itaSub4Controller::class, 'itaSub4Edit'])->name('itaSub4Edit');
             Route::post('/itaSub4Update', [itaSub4Controller::class, 'itaSub4Update'])->name('itaSub4Update');
         // Ita Sub 4 End
+
+        // Ita Main Menu Show Start
+            Route::get('/mainMenuShow', [mainMenuShowController::class, 'index'])->name('mainMenuShow');
+            Route::post('/mainMenuShowStore', [mainMenuShowController::class, 'mainMenuShowStore'])->name('mainMenuShowStore');
+            Route::get('/mainMenuShowFetchAll', [mainMenuShowController::class, 'mainMenuShowFetchAll'])->name('mainMenuShowFetchAll');
+            Route::delete('/mainMenuShowDelete', [mainMenuShowController::class, 'mainMenuShowDelete'])->name('mainMenuShowDelete');
+            Route::get('/mainMenuShowEdit', [mainMenuShowController::class, 'mainMenuShowEdit'])->name('mainMenuShowEdit');
+            Route::post('/mainMenuShowUpdate', [mainMenuShowController::class, 'mainMenuShowUpdate'])->name('mainMenuShowUpdate');
+        // Ita Main Menu Show End
 
     // Admin Side End
     });

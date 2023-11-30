@@ -13,16 +13,19 @@
                 <div class="m-3">
                     <a class="btn btn-success w-100 " onClick="toggleCollapse('testCollapse')" data-bs-toggle="collapse"
                         href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                        การจัดการ
+                        การจัดการข่าวประชาสัมพันธ์
                         <i id="testCollapse" class="testCollapse fas fa-angle-down rotate-icon ms-3"
                             style="transform: rotate(0deg);"></i>
                     </a>
                     <div class="collapse mt-3" id="collapseExample">
                         <div class="card card-body">
-                            <a href="{{ url('procurementAnnouncement') }}" class="menu-link d-flex aling-items-center p-2">ประกาศจัดซื้อจัดจ้าง</a>
-                            <a href="#" class="menu-link d-flex aling-items-center p-2">เอกสารประชาสัมพันธ์</a>
+                            <a href="#" class="menu-link d-flex aling-items-center p-2">ข่าวสารประชาสัมพันธ์ทั่วไป</a>
                             <a href="#" class="menu-link d-flex aling-items-center p-2">ประกาศรับสมัครงาน</a>
-                            <a href="#" class="menu-link d-flex aling-items-center p-2">เอกสารดาวห์โหลด</a>
+                            <a href="{{ url('procurementAnnouncement') }}" class="menu-link d-flex aling-items-center p-2">ประกาศจัดซื้อจัดจ้าง</a>
+                            <a href="#" class="menu-link d-flex aling-items-center p-2">ผลการจัดซื้อจัดจ้าง</a>
+                            <a href="#" class="menu-link d-flex aling-items-center p-2">การจัดฝึกอบรม</a>
+                            <a href="#" class="menu-link d-flex aling-items-center p-2">ปฏิทินกิจกรรมของหน่วยงาน</a>
+                            <a href="#" class="menu-link d-flex aling-items-center p-2">ข่าวสารกิจกรรมของหน่วยงาน</a>
                         </div>
                     </div>
                 </div>
@@ -61,19 +64,19 @@
                             </div>
                         </div>
                     </div>
-                    {{-- <div class="m-3">
-                        <a class="btn btn-success w-100" onClick="toggleCollapse('testCollapse22')" data-bs-toggle="collapse"
-                            href="#collapseExample22" role="button" aria-expanded="false" aria-controls="collapseExample">
-                            การจัดการข้อมูลภายใน ITA
-                            <i id="testCollapse22" class="testCollapse fas fa-angle-down rotate-icon ms-3"
+                    <div class="m-3">
+                        <a class="btn btn-success w-100" onClick="toggleCollapse('testCollapse12')" data-bs-toggle="collapse"
+                            href="#collapseExample12" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            การจัดการปุ่มใช้งาน
+                            <i id="testCollapse12" class="testCollapse fas fa-angle-down rotate-icon ms-3"
                                 style="transform: rotate(0deg);"></i>
                         </a>
-                        <div class="collapse" id="collapseExample22">
+                        <div class="collapse" id="collapseExample12">
                             <div class="card card-body">
-                                <a href="{{ url('fiscalYear') }}" class="menu-link d-flex aling-items-center p-2">เพิ่มข้อมูลปีงบประมาณ</a>
+                                <a href="{{ url('mainMenuShow') }}" class="menu-link d-flex aling-items-center p-2">Button MainMenuShow</a>
                             </div>
                         </div>
-                    </div> --}}
+                    </div>
                 @else
 
                 @endif

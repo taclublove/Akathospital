@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('precurement_announcements', function (Blueprint $table) {
-            $table->id('pa_id');
-            $table->string('pa_title');
-            // $table->unsignedBigInteger('user_id');
-            // $table->foreign('user_id')->references('id')->on('users');
-            $table->string('pa_filePDF');
+        Schema::create('main_menu_shows', function (Blueprint $table) {
+            $table->id();
+            $table->string('main_menu_show_name');
+            $table->string('link');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('precurement_announcements');
+        Schema::dropIfExists('main_menu_shows');
     }
 };

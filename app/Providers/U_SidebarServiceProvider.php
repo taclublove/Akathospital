@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use App\Models\FiscalYear;
 use App\Models\MainMenuShow;
+use App\Models\SubMenuShow;
 
 class U_SidebarServiceProvider extends ServiceProvider
 {
@@ -31,6 +32,8 @@ class U_SidebarServiceProvider extends ServiceProvider
             $view->with('fiscalYear', $fiscalYear);
             $mainMenuShow = MainMenuShow::all();
             $view->with('mainMenuShow', $mainMenuShow);
+            $subMenuShow = SubMenuShow::all();
+            $view->with('subMenuShow', $subMenuShow);
         });
     }
 }

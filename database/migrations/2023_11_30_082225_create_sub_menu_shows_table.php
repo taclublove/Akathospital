@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('fiscal_years', function (Blueprint $table) {
+        Schema::create('sub_menu_shows', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('main_menu_show_id');
             $table->foreign('main_menu_show_id')->references('id')->on('main_menu_shows');
-            $table->integer('fiscalYear_name')->nullable();
+            $table->string('sub_menu_show_name');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fiscal_years');
+        Schema::dropIfExists('sub_menu_shows');
     }
 };

@@ -4,7 +4,32 @@
         <a class="btn btn-ghost normal-case text-xl">Akathospital</a>
     </div>
     <div class="flex-none gap-3 text-2xl">
-        <div class="dropdown dropdown-end ">
+        @foreach ($mainMenuShow as $mms)
+            @if($mms->link == '')
+                <div class="dropdown dropdown-end">
+                    <label tabindex="0" class="btn btn-ghost ">
+                        <div class="w-30 rounded-full">
+                            <a>{{ $mms->main_menu_show_name }}</a>
+                        </div>
+                    </label>
+                    @if(!empty($mms->fiscalYear) || !empty($mms->subMenuShow))
+                        <ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-green-900 text-white rounded-box w-60 ">
+                            @foreach($mms->fiscalYear as $fcy)
+                                <li><a href="{{ route('ita', ['id' => $fcy->fiscalYear_name ]) }}" class="hover:text-black hover:bg-base-100">ITA ปีงบประมาณ {{ $fcy->fiscalYear_name }}</a></li>
+                            @endforeach
+                            @foreach($mms->subMenuShow as $sms)
+                                <li><a href="{{ route('ita', ['id' => $sms->sub_menu_show_name ]) }}" class="hover:text-black hover:bg-base-100">{{ $sms->sub_menu_show_name }}</a></li>
+                            @endforeach
+                        </ul>
+                    @endif
+                </div>
+            @elseif($mms->link != '')
+                <div class="dropdown dropdown-end ">
+                    <a href="{{ $mms->link }}" class="rounded-5 btn btn-ghost w-28 hover:scale-125 ease-in-out duration-300">{{ $mms->main_menu_show_name }}</a>
+                </div>
+            @endif
+        @endforeach
+        {{-- <div class="dropdown dropdown-end ">
             <a href="{{ url('/') }}" class="rounded-5 btn btn-ghost w-28 hover:scale-125 ease-in-out duration-300">หน้าหลัก</a>
         </div>
         <div class="dropdown dropdown-end">
@@ -31,8 +56,8 @@
             </label>
             <ul tabindex="0"
                 class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-green-900 rounded-box w-52">
-                <li><a href="{{ url('pressRelease') }}" class="hover:text-black hover:bg-base-100">ข่าวประชาสัมพันธ์</a></li>
-                <li><a href="{{ url('procurementNews') }}" class="hover:text-black hover:bg-base-100">ข่าวจัดซื้อจัดจ้าง</a></li>
+                <li><a href="#" class="hover:text-black hover:bg-base-100">ข่าวประชาสัมพันธ์</a></li>
+                <li><a href="#" class="hover:text-black hover:bg-base-100">ข่าวจัดซื้อจัดจ้าง</a></li>
             </ul>
         </div>
         <div class="dropdown dropdown-end">
@@ -64,7 +89,7 @@
         </div>
         <div class="dropdown dropdown-end ">
             <a href="http://backoffice.akathospital.com" class="rounded-5 btn btn-ghost w-28 hover:scale-125 ease-in-out duration-300" target="_blank">BackOffice</a>
-        </div>
+        </div> --}}
         <div class="dropdown dropdown-end">
             <label tabindex="0" class="btn btn-ghost" onclick="my_modal_2.showModal()">
                 <div class="w-30 rounded-full hover:scale-125 ease-in-out duration-300">

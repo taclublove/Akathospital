@@ -13,4 +13,12 @@ class MainMenuShow extends Model
         'main_menu_show_name',
         'link'
     ];
+
+    public function fiscalYear() {
+        return $this->hasMany(FiscalYear::class, 'main_menu_show_id');
+    }
+
+    public function subMenuShow() {
+        return $this->hasMany(SubMenuShow::class, 'main_menu_show_id');
+    }
 }

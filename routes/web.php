@@ -16,10 +16,9 @@ use App\Http\Controllers\admin\itaSub3Controller;
 use App\Http\Controllers\admin\itaSub4Controller;
 use App\Http\Controllers\admin\showPDFController;
 use App\Http\Controllers\admin\mainMenuShowController;
+use App\Http\Controllers\admin\subMenuShowController;
 use App\Http\Controllers\organizationHistoryController;
 use App\Http\Controllers\executiveCommitteeController;
-use App\Http\Controllers\pressReleaseController;
-use App\Http\Controllers\procurementNewsController;
 use App\Http\Controllers\vmvsController;
 use App\Http\Controllers\itaController;
 
@@ -152,14 +151,23 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('/itaSub4Update', [itaSub4Controller::class, 'itaSub4Update'])->name('itaSub4Update');
         // Ita Sub 4 End
 
-        // Ita Main Menu Show Start
+        // Main Menu Show Start
             Route::get('/mainMenuShow', [mainMenuShowController::class, 'index'])->name('mainMenuShow');
             Route::post('/mainMenuShowStore', [mainMenuShowController::class, 'mainMenuShowStore'])->name('mainMenuShowStore');
             Route::get('/mainMenuShowFetchAll', [mainMenuShowController::class, 'mainMenuShowFetchAll'])->name('mainMenuShowFetchAll');
             Route::delete('/mainMenuShowDelete', [mainMenuShowController::class, 'mainMenuShowDelete'])->name('mainMenuShowDelete');
             Route::get('/mainMenuShowEdit', [mainMenuShowController::class, 'mainMenuShowEdit'])->name('mainMenuShowEdit');
             Route::post('/mainMenuShowUpdate', [mainMenuShowController::class, 'mainMenuShowUpdate'])->name('mainMenuShowUpdate');
-        // Ita Main Menu Show End
+        // Main Menu Show End
+
+         // Sub Menu Show Start
+            Route::get('/subMenuShow', [subMenuShowController::class, 'index'])->name('subMenuShow');
+            Route::post('/subMenuShowStore', [subMenuShowController::class, 'subMenuShowStore'])->name('subMenuShowStore');
+            Route::get('/subMenuShowFetchAll', [subMenuShowController::class, 'subMenuShowFetchAll'])->name('subMenuShowFetchAll');
+            Route::delete('/subMenuShowDelete', [subMenuShowController::class, 'subMenuShowDelete'])->name('subMenuShowDelete');
+            Route::get('/subMenuShowEdit', [subMenuShowController::class, 'subMenuShowEdit'])->name('subMenuShowEdit');
+            Route::post('/subMenuShowUpdate', [subMenuShowController::class, 'subMenuShowUpdate'])->name('subMenuShowUpdate');
+        // Sub Menu Show End
 
     // Admin Side End
     });
@@ -168,8 +176,6 @@ Route::group(['middleware' => ['auth']], function () {
 
 Route::get('/organizationHistory', [organizationHistoryController::class, 'index'])->name('organizationHistory');
 Route::get('/executiveCommittee', [executiveCommitteeController::class, 'index'])->name('executiveCommittee');
-Route::get('/pressRelease', [pressReleaseController::class, 'index'])->name('pressRelease');
-Route::get('/procurementNews', [procurementNewsController::class, 'index'])->name('procurementNews');
 Route::get('/vmvs', [vmvsController::class, 'index'])->name('vmvs');
 Route::get('/ita/{id}', [itaController::class, 'index'])->name('ita');
 

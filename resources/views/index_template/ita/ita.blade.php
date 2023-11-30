@@ -17,9 +17,7 @@
                             <span class="text-red-900 font-bold">{{ $itaMain->name_ita_main }}</span> :
                             {{ $itaMain->description_ita_main }}
                         </p>
-
                         @if (!empty($itaMain->itaSub1))
-                            {{-- ตรวจสอบว่ามี $itaSub1 หรือไม่ --}}
                             <ul class="list-disc">
                                 @foreach ($itaMain->itaSub1 as $ita1)
                                     @if($ita1->file == '')

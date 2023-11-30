@@ -8,12 +8,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 // use Illuminate\Support\Facades\Storage;
 use App\Models\FiscalYear;
+use App\Models\MainMenuShow;
 
 class fiscalYearController extends Controller
 {
     // set index page view
 	public function index() {
-		return view('admin.fiscalYear.fcy');
+        $mainMenuShow = MainMenuShow::all();
+		return view('admin.fiscalYear.fcy', compact('mainMenuShow'));
 	}
 
 	// handle fetch all fiscal year ajax request
@@ -33,6 +35,7 @@ class fiscalYearController extends Controller
 			foreach ($fiscalYears as $fiscalYear) {
 				$output .= '<tr>
                 <td>' . $fiscalYear->id . '</td>
+                <td>' . $fiscalYear->main_menu_show_id . '</td>
                 <td>' . $fiscalYear->fiscalYear_name . '</td>
                 <td>
                   <a href="#" id="' . $fiscalYear->id . '" class="text-success mx-1 editIcon" data-bs-toggle="modal" data-bs-target="#FiscalYearModal"><i class="bi-pencil-square h4"></i></a>
@@ -75,17 +78,32 @@ class fiscalYearController extends Controller
                     'icon' => 'error'
                 ]);
             } else {
-                $fiscalYearData = [
-                    'fiscalYear_name' => $request->fiscalYear_name
-                ];
 
-                FiscalYear::create($fiscalYearData);
-                return response()->json([
-                    'status' => 200,
-                    'title' => 'Added!',
-                    'message' => 'เพิ่มข้อมูลเสร็จสิ้น',
-                    'icon' => 'success'
+                $validatorMainMenuShow = Validator::make($request->all(), [
+                    'main_menu_show_id' => ['required', 'string', 'exists:main_menu_shows,id']
                 ]);
+
+                if($validatorMainMenuShow->fails()) {
+                    return response()->json([
+                        'status' => 400,
+                        'title' => 'Error!',
+                        'message' => 'ข้อมูลใน Table ไม่ตรงกัน',
+                        'icon' => 'error'
+                    ]);
+                } else {
+                    $fiscalYearData = [
+                        'fiscalYear_name' => $request->fiscalYear_name,
+                        'main_menu_show_id' => $request->main_menu_show_id
+                    ];
+
+                    FiscalYear::create($fiscalYearData);
+                    return response()->json([
+                        'status' => 200,
+                        'title' => 'Added!',
+                        'message' => 'เพิ่มข้อมูลเสร็จสิ้น',
+                        'icon' => 'success'
+                    ]);
+                }
             }
         }
     }
@@ -99,7 +117,7 @@ class fiscalYearController extends Controller
 
 	// handle update an fiscal year ajax request
 	public function fiscalYearUpdate(Request $request) {
-		$fileName = '';
+		// $fileName = '';
 		$fiscalYear = FiscalYear::find($request->fiscalYear_id);
 
         $validatorFiscalYearName = Validator::make($request->all(), [
@@ -127,25 +145,40 @@ class fiscalYearController extends Controller
                     'icon' => 'error'
                 ]);
             } else {
-                $fiscalYearData = [
-                    'fiscalYear_name' => $request->fiscalYear_name
-                ];
 
-                if($fiscalYearData) {
-                    $fiscalYear->update($fiscalYearData);
-                    return response()->json([
-                        'status' => 200,
-                        'title' => 'Added!',
-                        'message' => 'Update ข้อมูลเสร็จสิ้น',
-                        'icon' => 'success'
-                    ]);
-                } else {
+                $validatorMainMenuShow = Validator::make($request->all(), [
+                    'main_menu_show_id' => ['required', 'string', 'exists:main_menu_shows,id']
+                ]);
+
+                if($validatorMainMenuShow->fails()) {
                     return response()->json([
                         'status' => 400,
                         'title' => 'Error!',
-                        'message' => 'Update ข้อมูลไม่สำเร็จ',
+                        'message' => 'ข้อมูลใน Table ไม่ตรงกัน',
                         'icon' => 'error'
                     ]);
+                } else {
+                    $fiscalYearData = [
+                        'fiscalYear_name' => $request->fiscalYear_name,
+                        'main_menu_show_id' => $request->main_menu_show_id
+                    ];
+
+                    if($fiscalYearData) {
+                        $fiscalYear->update($fiscalYearData);
+                        return response()->json([
+                            'status' => 200,
+                            'title' => 'Added!',
+                            'message' => 'Update ข้อมูลเสร็จสิ้น',
+                            'icon' => 'success'
+                        ]);
+                    } else {
+                        return response()->json([
+                            'status' => 400,
+                            'title' => 'Error!',
+                            'message' => 'Update ข้อมูลไม่สำเร็จ',
+                            'icon' => 'error'
+                        ]);
+                    }
                 }
             }
         }

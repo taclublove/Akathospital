@@ -74,6 +74,7 @@
                         <div class="collapse" id="collapseExample12">
                             <div class="card card-body">
                                 <a href="{{ url('mainMenuShow') }}" class="menu-link d-flex aling-items-center p-2">Button MainMenuShow</a>
+                                <a href="{{ url('subMenuShow') }}" class="menu-link d-flex aling-items-center p-2">Button SubMenuShow</a>
                             </div>
                         </div>
                     </div>

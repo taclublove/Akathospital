@@ -17,6 +17,7 @@ use App\Http\Controllers\admin\itaSub4Controller;
 use App\Http\Controllers\admin\showPDFController;
 use App\Http\Controllers\admin\mainMenuShowController;
 use App\Http\Controllers\admin\subMenuShowController;
+use App\Http\Controllers\admin\generalPressReleaseController;
 use App\Http\Controllers\organizationHistoryController;
 use App\Http\Controllers\executiveCommitteeController;
 use App\Http\Controllers\pressReleaseController;
@@ -169,6 +170,13 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/subMenuShowEdit', [subMenuShowController::class, 'subMenuShowEdit'])->name('subMenuShowEdit');
             Route::post('/subMenuShowUpdate', [subMenuShowController::class, 'subMenuShowUpdate'])->name('subMenuShowUpdate');
         // Sub Menu Show End
+
+            Route::get('/gprl', [generalPressReleaseController::class, 'index'])->name('gprl');
+            Route::post('/generalPressReleaseStore', [generalPressReleaseController::class, 'generalPressReleaseStore'])->name('generalPressReleaseStore');
+            Route::get('/generalPressReleaseFetchAll', [generalPressReleaseController::class, 'generalPressReleaseFetchAll'])->name('generalPressReleaseFetchAll');
+            Route::delete('/generalPressReleaseDelete', [generalPressReleaseController::class, 'generalPressReleaseDelete'])->name('generalPressReleaseDelete');
+            Route::get('/generalPressReleaseEdit', [generalPressReleaseController::class, 'generalPressReleaseEdit'])->name('generalPressReleaseEdit');
+            Route::post('/generalPressReleaseUpdate', [generalPressReleaseController::class, 'generalPressReleaseUpdate'])->name('generalPressReleaseUpdate');
 
     // Admin Side End
     });

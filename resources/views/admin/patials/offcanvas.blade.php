@@ -19,7 +19,7 @@
                     </a>
                     <div class="collapse mt-3" id="collapseExample">
                         <div class="card card-body">
-                            <a href="#" class="menu-link d-flex aling-items-center p-2">ข่าวสารประชาสัมพันธ์ทั่วไป</a>
+                            <a href="{{ url('gprl') }}" class="menu-link d-flex aling-items-center p-2">ข่าวสารประชาสัมพันธ์ทั่วไป</a>
                             <a href="#" class="menu-link d-flex aling-items-center p-2">ประกาศรับสมัครงาน</a>
                             <a href="{{ url('procurementAnnouncement') }}" class="menu-link d-flex aling-items-center p-2">ประกาศจัดซื้อจัดจ้าง</a>
                             <a href="#" class="menu-link d-flex aling-items-center p-2">ผลการจัดซื้อจัดจ้าง</a>

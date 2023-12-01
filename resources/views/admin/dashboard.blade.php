@@ -8,7 +8,7 @@
 <body class="none-scroll">
     @include('admin.patials_old.navbar')
 
-    
+
 
     <div class="grid grid-cols-1 bg-local">
         @include('admin.patials_old.sidebar')
@@ -16,7 +16,7 @@
             @yield('content')
         </div>
     </div>
-    
+
 
     @include('admin.patials_old.footerScript')
 </body>
@@ -35,6 +35,16 @@
 
 <body class="none-scroll">
 
+
+    {{-- Offcanvas Start --}}
+        @include('admin.patials.offcanvas')
+    {{-- Offcanvas End --}}
+
+    <!-- Navbar -->
+        @include('admin.patials.navbar')
+    <!-- Navbar -->
+
+
     {{-- Content Start --}}
         @yield('content')
     {{-- Content End --}}
@@ -43,6 +53,11 @@
         {{-- @include('admin.patials.modal') --}}
         @yield('modal')
     {{-- Modal End --}}
+
+    {{-- Footer Start --}}
+        @include('admin.patials.footer')
+    {{-- Footer End --}}
+
 
     {{-- Footer Script Start --}}
     @include('admin.patials.footerScript')

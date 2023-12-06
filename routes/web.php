@@ -172,11 +172,7 @@ Route::group(['middleware' => ['auth']], function () {
         // Sub Menu Show End
 
             Route::get('/gprl', [generalPressReleaseController::class, 'index'])->name('gprl');
-            Route::post('/generalPressReleaseStore', [generalPressReleaseController::class, 'generalPressReleaseStore'])->name('generalPressReleaseStore');
-            Route::get('/generalPressReleaseFetchAll', [generalPressReleaseController::class, 'generalPressReleaseFetchAll'])->name('generalPressReleaseFetchAll');
-            Route::delete('/generalPressReleaseDelete', [generalPressReleaseController::class, 'generalPressReleaseDelete'])->name('generalPressReleaseDelete');
-            Route::get('/generalPressReleaseEdit', [generalPressReleaseController::class, 'generalPressReleaseEdit'])->name('generalPressReleaseEdit');
-            Route::post('/generalPressReleaseUpdate', [generalPressReleaseController::class, 'generalPressReleaseUpdate'])->name('generalPressReleaseUpdate');
+            Route::get('/gprlCreate', [generalPressReleaseController::class, 'gprlCreate'])->name('gprlCreate');
 
     // Admin Side End
     });

@@ -17,8 +17,5 @@
         "sass": "^1.56.1",
         "tailwindcss": "^3.3.5",
         "vite": "^4.0.0"
-    },
-    "dependencies": {
-        "summernote": "^0.8.18"
     }
 }

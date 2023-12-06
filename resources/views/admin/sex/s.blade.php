@@ -86,7 +86,6 @@
 @section('script')
     <script>
         $(function() {
-
             // add new Sex ajax request
             $("#add_sex_form").submit(function(e) {
                 e.preventDefault();

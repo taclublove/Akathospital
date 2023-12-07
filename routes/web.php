@@ -173,6 +173,8 @@ Route::group(['middleware' => ['auth']], function () {
 
             Route::get('/gprl', [generalPressReleaseController::class, 'index'])->name('gprl');
             Route::get('/gprlCreate', [generalPressReleaseController::class, 'gprlCreate'])->name('gprlCreate');
+            // Route::get('/gprlFetchAll', [generalPressReleaseController::class, 'gprlFetchAll'])->name('gprlFetchAll');
+            Route::post('/gprlStore', [generalPressReleaseController::class, 'gprlStore'])->name('gprlStore');
 
     // Admin Side End
     });

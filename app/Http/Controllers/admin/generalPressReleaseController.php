@@ -67,7 +67,7 @@ class generalPressReleaseController extends Controller
             return redirect('gprl');
         } else {
             // return "มีการส่งข้อมูลมา";
-            session()->flash('error', 'บันทึกข้อมูลไม่สำเร็จ');
+            session()->flash('status', 'บันทึกข้อมูลไม่สำเร็จ');
 
             // Redirect to 'gprl' route
             return redirect('gprlStore');

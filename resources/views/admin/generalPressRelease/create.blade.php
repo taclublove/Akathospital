@@ -33,7 +33,7 @@
             </div>
         </div>
     </form>
-    @if (session('error'))
+    @if (session('status'))
         {{-- <div class="alert alert-success" role="alert">
                             {{ session('status') }}
                         </div> --}}
@@ -46,7 +46,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        {{ session('error') }}
+                        {{ session('status') }}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>

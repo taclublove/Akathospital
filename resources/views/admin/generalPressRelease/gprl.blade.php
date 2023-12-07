@@ -94,9 +94,9 @@
 
 @section('script')
 
-<script type="text/javascript">
-    $(document).ready(function() {
-    $('#summernote').summernote();
-    });
-</script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+        $('#summernote').summernote();
+        });
+    </script>
 @endsection

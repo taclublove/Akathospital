@@ -95,6 +95,7 @@ class generalPressReleaseController extends Controller
 
         $description = $dom->saveHTML();
 
+        // ตรวจสอบ
         $validatorTitle = Validator::make($request->all(), [
             'title' => ['required', 'string', 'max:100'],
         ]);

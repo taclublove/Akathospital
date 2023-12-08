@@ -15,7 +15,7 @@
 
         <fieldset disabled>
             <div class="mb-3">
-                <input type="text" name="recorderName" id="recorderName" value="{{ Auth::user()->id }}"
+                <input type="text" name="user_id" id="user_id" value="{{ Auth::user()->id }}"
                     class="form-control" placeholder="{{ Auth::user()->fname }} {{ Auth::user()->lname }}" required>
             </div>
         </fieldset>

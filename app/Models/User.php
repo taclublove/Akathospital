@@ -69,6 +69,10 @@ class User extends Authenticatable
         return $this->belongsTo(Sex::class, 'sex_id');
     }
 
+    public function gprl() {
+        return $this->hasMany(GeneralPressRelease::class, 'user_id');
+    }
+
     // public function isUser() {
     //     return $this->type === self::DEFAULT_TYPE;
     // }

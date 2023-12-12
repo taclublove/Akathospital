@@ -62,6 +62,15 @@ class generalPressReleaseController extends Controller
 
     public function gprlStore(Request $request) {
 
+        // $file = $request->file('image');
+        // $description = $request->description;
+
+        // if(isset($file)) {
+        //     return $file;
+        // } else {
+        //     return 'ไม่มีไฟล์ส่งเข้ามา';
+        // }
+
         $description = $request->description;
 
         $dom = new DOMDocument();
@@ -101,19 +110,48 @@ class generalPressReleaseController extends Controller
 
         $description = $dom->saveHTML();
 
-        $user_id = Auth::user()->id;
+        $file = $request->file('image');
+        if($file) {
+            $fileExtension = $file->getClientOriginalExtension();
 
-        $validatorTitle = Validator::make($request->all(), [
-            'title' => ['required', 'string', 'max:100'],
-        ]);
+            $allowedExtensions = ['png', 'jpg', 'jpeg'];
 
-        if($validatorTitle->fails()) {
-            session()->flash('message', 'Title ของคุณสามารถตั้งได้ไม่เกิน 100 ตัวอักษร');
-            return redirect('gprlCreate');
+            if(in_array(strtolower($fileExtension), $allowedExtensions)) {
+                $fileName = time() . '.' . $fileExtension;
+                $file->storeAs('public/files/gprls', $fileName);
+
+                $user_id = Auth::user()->id;
+
+                $validatorTitle = Validator::make($request->all(), [
+                    'title' => ['required', 'string', 'max:100'],
+                ]);
+
+                if($validatorTitle->fails()) {
+                    session()->flash('message', 'Title ของคุณสามารถตั้งได้ไม่เกิน 100 ตัวอักษร');
+                    return redirect('gprlCreate');
+                } else {
+                    $gprls = GeneralPressRelease::create([
+                        'title' => $request->title,
+                        'user_id' => $user_id,
+                        'image' => $fileName,
+                        'description' => $description
+                    ]);
+
+                    if($gprls) {
+                        session()->flash('status', 'บันทึกข้อมูลเรียบร้อย');
+                        return redirect('gprl');
+                    } else {
+                        session()->flash('status', 'บันทึกข้อมูลไม่สำเร็จ');
+                        return redirect('gprlCreate');
+                    }
+                }
+            }
         } else {
+            $user_id = Auth::user()->id;
             $gprls = GeneralPressRelease::create([
                 'title' => $request->title,
                 'user_id' => $user_id,
+                'image' => '',
                 'description' => $description
             ]);
 
@@ -127,10 +165,12 @@ class generalPressReleaseController extends Controller
         }
     }
 
+    // Edit GeneralPressRelease Start
     public function gprlEdit($id) {
         $gprls = GeneralPressRelease::find($id);
         return view('admin.generalPressRelease.edit', compact('gprls'));
     }
+    // Edit GeneralPressRelease End
 
     public function gprlUpdate(Request $request, $id) {
         $gprls = GeneralPressRelease::find($id);
@@ -205,37 +245,52 @@ class generalPressReleaseController extends Controller
         $id = $request->id;
         $gprls = GeneralPressRelease::find($id);
 
-        $dom= new DOMDocument();
-        $dom->loadHTML($gprls->description,9);
-        $images = $dom->getElementsByTagName('img');
-
-        foreach ($images as $key => $img) {
-
-            $src = $img->getAttribute('src');
-            $path = Str::of($src)->after('/');
-
-
-            if (File::exists($path)) {
-                File::delete($path);
-
-            }
-        }
-
-        if($gprls->delete() ) {
+        if($gprls->file('image')) {
             return response()->json([
                 'status' => 200,
-                'title' => 'Deleted!',
-                'message' => 'ลบข้อมูล และ File เสร็จสิ้น',
+                'title' => 'Added!',
+                'message' => $gprls->file,
                 'icon' => 'success'
             ]);
         } else {
             return response()->json([
-                'status' => 200,
+                'status' => 400,
                 'title' => 'Error!',
-                'message' => 'ลบข้อมูลที่ไม่มี File เสร็จสิ้น',
+                'message' => 'ไม่มีข้อมูล File',
                 'icon' => 'error'
             ]);
         }
-        // return redirect('gprl');
+
+
+        // if(Storage::delete('public/files/gprls/' . $gprls->file)) {
+        //     if(GeneralPressRelease::destroy($id)) {
+        //         $dom= new DOMDocument();
+        //         $dom->loadHTML($gprls->description,9);
+        //         $images = $dom->getElementsByTagName('img');
+
+        //         foreach ($images as $key => $img) {
+
+        //             $src = $img->getAttribute('src');
+        //             $path = Str::of($src)->after('/');
+
+        //             if (File::exists($path)) {
+        //                 File::delete($path);
+        //             }
+        //         }
+        //         return response()->json([
+        //             'status' => 200,
+        //             'title' => 'Deleted!',
+        //             'message' => 'ลบข้อมูล และ Image เสร็จสิ้น',
+        //             'icon' => 'success'
+        //         ]);
+        //     }
+        // } else {
+        //     return response()->json([
+        //         'status' => 400,
+        //         'title' => 'Error!',
+        //         'message' => 'ไม่มีการลบไฟล์รูปภาพ',
+        //         'icon' => 'error'
+        //     ]);
+        // }
     }
 }

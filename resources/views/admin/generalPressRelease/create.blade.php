@@ -6,7 +6,7 @@
 
 @section('content')
     <h1 class="text-center">เพิ่มข้อมูลข่าวประชาสัมพันธ์ทั่วไป</h1>
-    <form method="POST" action="{{ route('gprlStore') }}" id="gprlForm">
+    <form method="POST" action="{{ route('gprlStore') }}" id="gprlForm" enctype="multipart/form-data">
         @csrf
         <div class="form-floating my-3">
             <input type="text" class="form-control" id="title" name="title" placeholder="title" required>
@@ -21,7 +21,7 @@
         </fieldset>
 
         <div class="mb-3">
-            <input type="file" class="form-control" name="image">
+            <input type="file" class="form-control" name="image" id="image">
         </div>
 
         <div class="form-group">

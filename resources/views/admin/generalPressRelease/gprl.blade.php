@@ -149,7 +149,6 @@
                         method: 'delete',
                         data: {
                             id: id,
-                            //image: image,
                             _token: csrf
                         },
                         success: function(response) {

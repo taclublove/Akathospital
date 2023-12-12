@@ -1,15 +1,15 @@
 @extends('admin.dashboardEditor')
 
 @section('title')
-    <title>เพิ่มข้อมูลข่าวประชาสัมพันธ์ทั่วไป</title>
+    <title>แก้ไขข้อมูลข่าวประชาสัมพันธ์ทั่วไป</title>
 @endsection
 
 @section('content')
-    <h1 class="text-center">เพิ่มข้อมูลข่าวประชาสัมพันธ์ทั่วไป</h1>
-    <form method="POST" action="{{ route('gprlStore') }}" id="gprlForm">
+    <h1 class="text-center">แก้ไขข้อมูลข่าวประชาสัมพันธ์ทั่วไป</h1>
+    <form method="POST" action="{{ route('gprlUpdate', ['id' => $gprls->id]) }}" id="gprlForm">
         @csrf
         <div class="form-floating my-3">
-            <input type="text" class="form-control" id="title" name="title" placeholder="title" required>
+            <input type="text" class="form-control" id="title" name="title" placeholder="title" value="{{ $gprls->title }}" required>
             <label for="floatingInput">หัวข้อ</label>
         </div>
 
@@ -20,12 +20,8 @@
             </div>
         </fieldset>
 
-        <div class="mb-3">
-            <input type="file" class="form-control" name="image">
-        </div>
-
         <div class="form-group">
-            <textarea class="form-control" name="description" id="summernote" required></textarea>
+            <textarea class="form-control" name="description" id="summernote" required>{{ $gprls->description }}</textarea>
         </div>
 
         <div class="d-flex justify-content-between ">
@@ -38,7 +34,6 @@
         </div>
     </form>
     @if (session('status'))
-        <!-- Modal -->
         <div class="modal fade" id="refreshModal" tabindex="-1" aria-labelledby="refreshModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">

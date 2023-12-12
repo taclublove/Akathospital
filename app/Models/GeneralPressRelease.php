@@ -11,6 +11,7 @@ class GeneralPressRelease extends Model
     protected $fillable = [
         'user_id',
         'title',
+        'image',
         'description'
     ];
 

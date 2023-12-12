@@ -6,7 +6,7 @@
 
 @section('modal')
     {{-- new user general press release start --}}
-    <div class="modal fade" id="GeneralPressReleaseModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+    {{-- <div class="modal fade" id="GeneralPressReleaseModal" tabindex="-1" aria-labelledby="exampleModalLabel"
         data-bs-backdrop="static" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content w-5">
@@ -67,7 +67,7 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div> --}}
     {{--  new general press release end --}}
 @endsection
 
@@ -85,9 +85,6 @@
                         <h1 class="text-center text-secondary my-5">Loading...</h1>
                     </div>
                     @if (session('status'))
-                        {{-- <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div> --}}
                         <!-- Modal -->
                         <div class="modal fade" id="refreshModal" tabindex="-1" aria-labelledby="refreshModalLabel"
                             aria-hidden="true">
@@ -117,6 +114,7 @@
 
 @section('script')
     <script>
+
         // Wait for 3 seconds, then close the alert
         setTimeout(function() {
             document.querySelector('.alert').style.display = 'none';
@@ -127,5 +125,64 @@
             var myModal = new bootstrap.Modal(document.getElementById('refreshModal'));
             myModal.show();
         });
+
+
+
+        $(function() {
+            $(document).on('click', '.deleteIcon', function(e) {
+            e.preventDefault();
+            let id = $(this).attr('id');
+            let csrf = '{{ csrf_token() }}';
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "คุณต้องการลบข้อมูลใช่หรือไม่",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'ใช่ฉันต้องการลบ'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '{{ route('gprlDelete') }}',
+                        method: 'delete',
+                        data: {
+                            id: id,
+                            //image: image,
+                            _token: csrf
+                        },
+                        success: function(response) {
+                            console.log(response);
+                            Swal.fire(
+                                response.title,
+                                response.message,
+                                response.icon
+                            )
+                            fetchAllGprl();
+                        }
+                    });
+                }
+            })
+        });
+
+        fetchAllGprl();
+
+        function fetchAllGprl() {
+            $.ajax({
+                url: '{{ route('gprlFetchAll') }}',
+                method: 'get',
+                success: function(response) {
+                    $("#show_all_generalPressRelease").html(response);
+                    $("table").DataTable({
+                        order: [0, 'desc']
+                    });
+                }
+            });
+        }
+    });
+
+
+
     </script>
 @endsection

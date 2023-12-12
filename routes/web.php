@@ -15,6 +15,7 @@ use App\Http\Controllers\admin\itaSub2Controller;
 use App\Http\Controllers\admin\itaSub3Controller;
 use App\Http\Controllers\admin\itaSub4Controller;
 use App\Http\Controllers\admin\showPDFController;
+use App\Http\Controllers\admin\showEditorController;
 use App\Http\Controllers\admin\mainMenuShowController;
 use App\Http\Controllers\admin\subMenuShowController;
 use App\Http\Controllers\admin\generalPressReleaseController;
@@ -173,9 +174,11 @@ Route::group(['middleware' => ['auth']], function () {
 
             Route::get('/gprl', [generalPressReleaseController::class, 'index'])->name('gprl');
             Route::get('/gprlCreate', [generalPressReleaseController::class, 'gprlCreate'])->name('gprlCreate');
-            // Route::get('/gprlFetchAll', [generalPressReleaseController::class, 'gprlFetchAll'])->name('gprlFetchAll');
+            Route::get('/gprlFetchAll', [generalPressReleaseController::class, 'gprlFetchAll'])->name('gprlFetchAll');
             Route::post('/gprlStore', [generalPressReleaseController::class, 'gprlStore'])->name('gprlStore');
-
+            Route::get('/gprlEdit/{id}', [generalPressReleaseController::class, 'gprlEdit'])->name('gprlEdit');
+            Route::delete('/gprlDelete', [generalPressReleaseController::class, 'gprlDelete'])->name('gprlDelete');
+            Route::post('/gprlUpdate/{id}', [generalPressReleaseController::class, 'gprlUpdate'])->name('gprlUpdate');
     // Admin Side End
     });
 
@@ -191,5 +194,8 @@ Route::get('/ita/{id}', [itaController::class, 'index'])->name('ita');
 Route::get('/showPDF/{id},{mode}', [showPDFController::class, 'show'])->name('showPDF');
 // Show PDF End
 
+// Show Editor Start
+Route::get('/gprlShow/{id}', [showEditorController::class, 'gprlShow'])->name('gprlShow');
+// Show Editor End
 
 

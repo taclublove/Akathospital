@@ -12,6 +12,7 @@ class GeneralPressRelease extends Model
         'user_id',
         'title',
         'image',
+        'pdf',
         'description'
     ];
 

@@ -39,22 +39,15 @@
         <hr>
 
         <label class="form-check-label mb-1" for="inlineRadio1">ส่วนที่ 2</label>
-        <div class="mb-3" >
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="showAddFilePDF" value="option1">
-                <label class="form-check-label" for="inlineRadio1">ต้องการเพิ่ม File PDF</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="showAddFileEditor" value="option2">
-                <label class="form-check-label" for="inlineRadio2">ต้องการสร้างหน้าข่าวสารเอง</label>
-            </div>
-        </div>
 
         <div class="mb-3" id="addPDF">
+            <label class="form-check-label mb-1" for="inlineRadio1">เพิ่ม File PDF ด้านล่าง</label>
             <input type="file" class="form-control" name="pdf" id="pdf">
         </div>
 
+
         <div class="form-group" id="addEditor">
+            <label class="form-check-label mb-1" for="inlineRadio1">สร้างหน้าข่าวสารด้านล่าง</label>
             <textarea class="form-control" name="description" id="summernote"></textarea>
         </div>
 
@@ -100,41 +93,43 @@
             const dontShowAddImage = document.getElementById('dontShowAddImage');
             // ดึง ID ของปุ่มเพิ่มFile หรือ Input type file
             const addImage = document.getElementById('addImage');
+            // ดึง ID ของปุ่มเพิ่มFile หรือ Input type file
+            const addPDF = document.getElementById('addPDF');
+            // ดึง ID ของปุ่มเพิ่มFile หรือ Input type file
+            const addEditor = document.getElementById('addEditor');
 
-            // ปิดการแสดงผลของ input type file
-            addImage.style.display = 'none';
+            // ปิดการแสดงผลของ input type file Start
+                // ปิดการแสดงผลของ Item ที่มี ID addImage
+                addImage.style.display = 'none';
+                // ปิดการแสดงผลของ Item ที่มี ID addPDF
+                addPDF.style.display = 'none';
+                // ปิดการแสดงผลของ Item ที่มี ID addEditor
+                addEditor.style.display = 'none';
+            // ปิดการแสดงผลของ input type file End
 
             // เป็นการตรวจเช็คปุ่มไม่ต้องการเพิ่มภาพหน้าปก = จริง เพื่อที่จะไม่ให้แสดงผลเมื่อมีการเปิดมายังหน้านี้
-            dontShowAddImage.checked = true;
+            // dontShowAddImage.checked = true;
 
             // เมื่อมีการคลิกที่ปุ่มต้องการเพิ่มภาพหน้าปกให้ทำการแสดงในส่วนของ input type file
             showAddImage.addEventListener('click', function() {
+                // แสดงผลของ Item ที่มี ID addImage
                 addImage.style.display = 'block';
+                // ปิดการแสดงผลของ Item ที่มี ID addPDF
+                addPDF.style.display = 'none';
+                // แสดงผลของ Item ที่มี ID addEditor
+                addEditor.style.display = 'block';
             });
 
             // เมื่อมีการคลิกที่ปุ่มไม่ต้องการเพิ่มภาพหน้าปกให้ทำการปิดในส่วนของ input type file
             dontShowAddImage.addEventListener('click', function() {
+                // ปิดการแสดงผลของ Item ที่มี ID addImage
                 addImage.style.display = 'none';
-            });
-        // คำสั่งการนำ ID มากำหนดเมื่อมีการ Click เพื่อเลือกระหว่าง : ต้องการเพิ่มภาพหน้าปก กับ ไม่ต้องการเพิ่มภาพหน้าปก End
-
-            const showAddFilePDF = document.getElementById('showAddFilePDF');
-            const showAddFileEditor = document.getElementById('showAddFileEditor');
-            const addPDF = document.getElementById('addPDF');
-            const addEditor = document.getElementById('addEditor');
-
-            addPDF.style.display = 'none';
-            addEditor.style.display = 'none';
-
-            showAddFilePDF.addEventListener('click', function() {
+                // แสดงผลของ Item ที่มี ID addPDF
                 addPDF.style.display = 'block';
+                // ปิดการแสดงผลของ Item ที่มี ID addEditor
                 addEditor.style.display = 'none';
             });
-
-            showAddFileEditor.addEventListener('click', function() {
-                addPDF.style.display = 'none';
-                addEditor.style.display = 'block';
-            });
+        // คำสั่งการนำ ID มากำหนดเมื่อมีการ Click เพื่อเลือกระหว่าง : ต้องการเพิ่มภาพหน้าปก กับ ไม่ต้องการเพิ่มภาพหน้าปก End
 
     </script>
 @endsection

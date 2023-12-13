@@ -65,97 +65,191 @@ class generalPressReleaseController extends Controller
     // Add GeneralPressRelease Start
     public function gprlStore(Request $request) {
 
+        // ตัวแปร description ที่เก็บข้อมูลจากการส่ง request มาจาก description ของหน้ากรอกข้อมูล
         $description = $request->description;
 
-        $dom = new DOMDocument();
-        $dom->loadHTML('<?xml encoding="UTF-8">' . $description, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        // ตัวแปร pdf ที่เก็บข้อมูลจากการส่ง request มาจาก pdf ของหน้ากรอกข้อมูล
+        $pdf = $request->pdf;
 
-        $images = $dom->getElementsByTagName('img');
+        // เมื่อมีข้อมูลจาก description ถึงทำตามเงื่อนไขด้านล่าง
+        if($description) {
+            // สร้าง Object ของ Class DOMDocument
+            $dom = new DOMDocument();
 
-        foreach ($images as $key => $img) {
+            // เข้าถึงการ loadHTML เพื่อโหลดเนื้อหา HTML ลงใน Object DOMDocument
+            // LIBXML_HTML_NOIMPLIED = ไม่เพิ่ม <html> และ <body> โดยอัตโนมัติ
+            // LIBXML_HTML_NODEFDTD = ไม่เพิ่ม DTD (Document Type Definition) โดยอัตโนมัติ
+            $dom->loadHTML('<?xml encoding="UTF-8">' . $description, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
-            // Check if the image is a new one
-            $src = $img->getAttribute('src');
+            // ตัวแปรที่เก็บข้อมูลจากการเข้าถึงของ DOMDocument เข้าถึง Tag ของ img ที่มาจาก Editor ไปเก็บไว้ในตัวแปร $images
+            $images = $dom->getElementsByTagName('img');
 
-            if (strpos($src, 'data:image/') === 0) {
-                $srcParts = explode(';', $src);
+            foreach ($images as $key => $img) {
+                // ตัวแปร src เข้าถึง Attribute ของ src ที่อยู่ใน Tag ของ img
+                $src = $img->getAttribute('src');
 
-                if (isset($srcParts[1])) {
-                    $base64Data = explode(',', $srcParts[1]);
+                if (strpos($src, 'data:image/') === 0) {
+                    $srcParts = explode(';', $src);
 
-                    if (isset($base64Data[1])) {
-                        $data = base64_decode($base64Data[1]);
+                    if (isset($srcParts[1])) {
+                        $base64Data = explode(',', $srcParts[1]);
 
-                        $image_name = "/uploadGprl/" . time(). $key.'.png';
-                        file_put_contents(public_path().$image_name, $data);
+                        if (isset($base64Data[1])) {
+                            $data = base64_decode($base64Data[1]);
 
-                        $img->removeAttribute('src');
-                        $img->setAttribute('src', $image_name);
+                            $image_name = "/uploadGprl/" . time(). $key.'.png';
+                            file_put_contents(public_path().$image_name, $data);
+
+                            $img->removeAttribute('src');
+                            $img->setAttribute('src', $image_name);
+                        } else {
+                            // กรณี $base64Data ไม่มีตำแหน่งที่ 1
+                            echo "Invalid base64 data format for image at index $key";
+                        }
                     } else {
-                        // กรณี $base64Data ไม่มีตำแหน่งที่ 1
-                        echo "Invalid base64 data format for image at index $key";
+                        // กรณี $srcParts ไม่มีตำแหน่งที่ 1
+                        echo "Invalid src format for image at index $key";
                     }
-                } else {
-                    // กรณี $srcParts ไม่มีตำแหน่งที่ 1
-                    echo "Invalid src format for image at index $key";
                 }
             }
-        }
+            $description = $dom->saveHTML();
+            $image = $request->file('image');
+            if($image) {
+                $imageExtension = $image->getClientOriginalExtension();
 
-        $description = $dom->saveHTML();
+                $allowedExtensions = ['png', 'jpg', 'jpeg'];
 
-        $image = $request->file('image');
-        if($image) {
-            $imageExtension = $image->getClientOriginalExtension();
+                if(in_array(strtolower($imageExtension), $allowedExtensions)) {
+                    $imageName = time() . '.' . $imageExtension;
+                    $image->storeAs('public/files/images/gprls', $imageName);
 
-            $allowedExtensions = ['png', 'jpg', 'jpeg'];
+                    $user_id = Auth::user()->id;
 
-            if(in_array(strtolower($imageExtension), $allowedExtensions)) {
-                $imageName = time() . '.' . $imageExtension;
-                $image->storeAs('public/files/images/gprls', $imageName);
-
-                $user_id = Auth::user()->id;
-
-                $validatorTitle = Validator::make($request->all(), [
-                    'title' => ['required', 'string', 'max:100'],
-                ]);
-
-                if($validatorTitle->fails()) {
-                    session()->flash('message', 'Title ของคุณสามารถตั้งได้ไม่เกิน 100 ตัวอักษร');
-                    return redirect('gprlCreate');
-                } else {
-                    $gprls = GeneralPressRelease::create([
-                        'title' => $request->title,
-                        'user_id' => $user_id,
-                        'image' => $imageName,
-                        'description' => $description
+                    $validatorTitle = Validator::make($request->all(), [
+                        'title' => ['required', 'string', 'max:100'],
                     ]);
 
-                    if($gprls) {
-                        session()->flash('status', 'บันทึกข้อมูลเรียบร้อย');
-                        return redirect('gprl');
-                    } else {
-                        session()->flash('status', 'บันทึกข้อมูลไม่สำเร็จ');
+                    if($validatorTitle->fails()) {
+                        session()->flash('message', 'Title ของคุณสามารถตั้งได้ไม่เกิน 100 ตัวอักษร');
                         return redirect('gprlCreate');
+                    } else {
+                        $gprls = GeneralPressRelease::create([
+                            'title' => $request->title,
+                            'user_id' => $user_id,
+                            'image' => $imageName,
+                            'pdf' => '',
+                            'description' => $description
+                        ]);
+
+                        if($gprls) {
+                            session()->flash('status', 'บันทึกข้อมูลเรียบร้อย');
+                            return redirect('gprl');
+                        } else {
+                            session()->flash('status', 'บันทึกข้อมูลไม่สำเร็จ');
+                            return redirect('gprlCreate');
+                        }
                     }
                 }
+            } else {
+                $user_id = Auth::user()->id;
+                $gprls = GeneralPressRelease::create([
+                    'title' => $request->title,
+                    'user_id' => $user_id,
+                    'image' => '',
+                    'pdf' => '',
+                    'description' => $description
+                ]);
+
+                if($gprls) {
+                    session()->flash('status', 'บันทึกข้อมูลเรียบร้อย');
+                    return redirect('gprl');
+                } else {
+                    session()->flash('status', 'บันทึกข้อมูลไม่สำเร็จ');
+                    return redirect('gprlCreate');
+                }
+            }
+        // เมื่อมีข้อมูลจาก pdf ถึงทำตามเงื่อนไขด้านล่าง
+        } elseif($pdf) {
+            // ตัวแปร pdf เข้าถึง file ที่มี name คือ pdf จากหน้าส่งข้อมูล
+            $pdf = $request->file('pdf');
+
+            if($pdf) {
+                $pdfExtension = $pdf->getClientOriginalExtension();
+
+                $allowedExtensions = ['pdf'];
+
+                if(in_array(strtolower($pdfExtension), $allowedExtensions)) {
+                    $pdfName = time() . '.' . $pdfExtension;
+                    $pdf->storeAs('public/files/pdfs/gprls', $pdfName);
+                    $image = $request->file('image');
+                    if($image) {
+                        $imageExtension = $image->getClientOriginExtension();
+                        $allowedExtensions = ['png', 'jpeg', 'jpg'];
+                        if(in_array(strtolower($imageExtension), $allowedExtensions)) {
+                            $imageName = time() . '.' . $imageExtension;
+                            $image->storeAs('public/files/images/gprls', $imageName);
+
+                            $user_id = Auth::user()->id;
+
+                            $validatorTitle = Validator::make($request->all(), [
+                                'title' => ['required', 'string', 'max:100'],
+                            ]);
+
+                            if($validatorTitle->fails()) {
+                                session()->flash('message', 'Title ของคุณสามารถตั้งได้ไม่เกิน 100 ตัวอักษร');
+                                return redirect('gprlCreate');
+                            } else {
+                                $gprls = GeneralPressRelease::create([
+                                    'title' => $request->title,
+                                    'user_id' => $user_id,
+                                    'image' => $imageName,
+                                    'pdf' => $pdfName,
+                                    'description' => ''
+                                ]);
+
+                                if($gprls) {
+                                    session()->flash('status', 'บันทึกข้อมูลเรียบร้อย');
+                                    return redirect('gprl');
+                                } else {
+                                    session()->flash('status', 'บันทึกข้อมูลไม่สำเร็จ');
+                                    return redirect('gprlCreate');
+                                }
+                            }
+                        }
+                    } else {
+                        $user_id = Auth::user()->id;
+
+                        $validatorTitle = Validator::make($request->all(), [
+                            'title' => ['required', 'string', 'max:100'],
+                        ]);
+
+                        if($validatorTitle->fails()) {
+                            session()->flash('message', 'Title ของคุณสามารถตั้งได้ไม่เกิน 100 ตัวอักษร');
+                            return redirect('gprlCreate');
+                        } else {
+                            $gprls = GeneralPressRelease::create([
+                                'title' => $request->title,
+                                'user_id' => $user_id,
+                                'image' => '',
+                                'pdf' => $pdfName,
+                                'description' => ''
+                            ]);
+
+                            if($gprls) {
+                                session()->flash('status', 'บันทึกข้อมูลเรียบร้อย');
+                                return redirect('gprl');
+                            } else {
+                                session()->flash('status', 'บันทึกข้อมูลไม่สำเร็จ');
+                                return redirect('gprlCreate');
+                            }
+                        }
+                    }
+                }
+            } else {
+
             }
         } else {
-            $user_id = Auth::user()->id;
-            $gprls = GeneralPressRelease::create([
-                'title' => $request->title,
-                'user_id' => $user_id,
-                'image' => '',
-                'description' => $description
-            ]);
 
-            if($gprls) {
-                session()->flash('status', 'บันทึกข้อมูลเรียบร้อย');
-                return redirect('gprl');
-            } else {
-                session()->flash('status', 'บันทึกข้อมูลไม่สำเร็จ');
-                return redirect('gprlCreate');
-            }
         }
     }
     // Add GeneralPressRelease End
@@ -172,43 +266,182 @@ class generalPressReleaseController extends Controller
         $gprls = GeneralPressRelease::find($id);
 
         $description = $request->description;
+        $pdf = $request->pdf;
 
-        $dom = new DOMDocument();
-        $dom->loadHTML('<?xml encoding="UTF-8">' . $description, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        if(isset($description) && !isset($pdf)) {
+            $dom = new DOMDocument();
+            $dom->loadHTML('<?xml encoding="UTF-8">' . $description, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
-        $images = $dom->getElementsByTagName('img');
+            $images = $dom->getElementsByTagName('img');
 
-        foreach ($images as $key => $img) {
+            foreach ($images as $key => $img) {
 
-            // Check if the image is a new one
-            $src = $img->getAttribute('src');
+                // Check if the image is a new one
+                $src = $img->getAttribute('src');
 
-            if (strpos($src, 'data:image/') === 0) {
-                $srcParts = explode(';', $src);
+                if (strpos($src, 'data:image/') === 0) {
+                    $srcParts = explode(';', $src);
 
-                if (isset($srcParts[1])) {
-                    $base64Data = explode(',', $srcParts[1]);
+                    if (isset($srcParts[1])) {
+                        $base64Data = explode(',', $srcParts[1]);
 
-                    if (isset($base64Data[1])) {
-                        $data = base64_decode($base64Data[1]);
+                        if (isset($base64Data[1])) {
+                            $data = base64_decode($base64Data[1]);
 
-                        $image_name = "/uploadGprl/" . time(). $key.'.png';
-                        file_put_contents(public_path().$image_name, $data);
+                            $image_name = "/uploadGprl/" . time(). $key.'.png';
+                            file_put_contents(public_path().$image_name, $data);
 
-                        $img->removeAttribute('src');
-                        $img->setAttribute('src', $image_name);
+                            $img->removeAttribute('src');
+                            $img->setAttribute('src', $image_name);
+                        } else {
+                            // กรณี $base64Data ไม่มีตำแหน่งที่ 1
+                            echo "Invalid base64 data format for image at index $key";
+                        }
                     } else {
-                        // กรณี $base64Data ไม่มีตำแหน่งที่ 1
-                        echo "Invalid base64 data format for image at index $key";
+                        // กรณี $srcParts ไม่มีตำแหน่งที่ 1
+                        echo "Invalid src format for image at index $key";
                     }
-                } else {
-                    // กรณี $srcParts ไม่มีตำแหน่งที่ 1
-                    echo "Invalid src format for image at index $key";
                 }
+            }
+
+            $description = $dom->saveHTML();
+            $image = $request->file('image');
+            if($image) {
+                $imageExtension = $image->getClientOriginalExtension();
+
+                $allowedExtensions = ['png', 'jpg', 'jpeg'];
+
+                if(in_array(strtolower($imageExtension), $allowedExtensions)) {
+                    $imageName = time() . '.' . $imageExtension;
+                    $image->storeAs('public/files/images/gprls', $imageName);
+
+                    $user_id = Auth::user()->id;
+
+                    $validatorTitle = Validator::make($request->all(), [
+                        'title' => ['required', 'string', 'max:100'],
+                    ]);
+
+                    if($validatorTitle->fails()) {
+                        session()->flash('message', 'Title ของคุณสามารถตั้งได้ไม่เกิน 100 ตัวอักษร');
+                        return redirect('gprlCreate');
+                    } else {
+                        $gprls->update([
+                            'title' => $request->title,
+                            'user_id' => $user_id,
+                            'image' => $imageName,
+                            'pdf' => '',
+                            'description' => $description
+                        ]);
+
+                        if($gprls) {
+                            session()->flash('status', 'บันทึกข้อมูลเรียบร้อย');
+                            return redirect('gprl');
+                        } else {
+                            session()->flash('status', 'บันทึกข้อมูลไม่สำเร็จ');
+                            return redirect('gprlCreate');
+                        }
+                    }
+                }
+            } else {
+                $user_id = Auth::user()->id;
+                $gprls->update([
+                    'title' => $request->title,
+                    'user_id' => $user_id,
+                    'image' => '',
+                    'pdf' => '',
+                    'description' => $description
+                ]);
+
+                if($gprls) {
+                    session()->flash('status', 'บันทึกข้อมูลเรียบร้อย');
+                    return redirect('gprl');
+                } else {
+                    session()->flash('status', 'บันทึกข้อมูลไม่สำเร็จ');
+                    return redirect('gprlCreate');
+                }
+            }
+        } elseif(isset($pdf) && !isset($description)) {
+            // ตัวแปร pdf เข้าถึง file ที่มี name คือ pdf จากหน้าส่งข้อมูล
+            $pdf = $request->file('pdf');
+
+            if($pdf) {
+                $pdfExtension = $pdf->getClientOriginalExtension();
+
+                $allowedExtensions = ['pdf'];
+
+                if(in_array(strtolower($pdfExtension), $allowedExtensions)) {
+                    $pdfName = time() . '.' . $pdfExtension;
+                    $pdf->storeAs('public/files/pdfs/gprls', $pdfName);
+                    $image = $request->file('image');
+                    if($image) {
+                        $imageExtension = $image->getClientOriginExtension();
+                        $allowedExtensions = ['png', 'jpeg', 'jpg'];
+                        if(in_array(strtolower($imageExtension), $allowedExtensions)) {
+                            $imageName = time() . '.' . $imageExtension;
+                            $image->storeAs('public/files/images/gprls', $imageName);
+
+                            $user_id = Auth::user()->id;
+
+                            $validatorTitle = Validator::make($request->all(), [
+                                'title' => ['required', 'string', 'max:100'],
+                            ]);
+
+                            if($validatorTitle->fails()) {
+                                session()->flash('message', 'Title ของคุณสามารถตั้งได้ไม่เกิน 100 ตัวอักษร');
+                                return redirect('gprlCreate');
+                            } else {
+                                $gprls->update([
+                                    'title' => $request->title,
+                                    'user_id' => $user_id,
+                                    'image' => $imageName,
+                                    'pdf' => $pdfName,
+                                    'description' => ''
+                                ]);
+
+                                if($gprls) {
+                                    session()->flash('status', 'บันทึกข้อมูลเรียบร้อย');
+                                    return redirect('gprl');
+                                } else {
+                                    session()->flash('status', 'บันทึกข้อมูลไม่สำเร็จ');
+                                    return redirect('gprlCreate');
+                                }
+                            }
+                        }
+                    } else {
+                        $user_id = Auth::user()->id;
+
+                        $validatorTitle = Validator::make($request->all(), [
+                            'title' => ['required', 'string', 'max:100'],
+                        ]);
+
+                        if($validatorTitle->fails()) {
+                            session()->flash('message', 'Title ของคุณสามารถตั้งได้ไม่เกิน 100 ตัวอักษร');
+                            return redirect('gprlCreate');
+                        } else {
+                            $gprls->update([
+                                'title' => $request->title,
+                                'user_id' => $user_id,
+                                'image' => '',
+                                'pdf' => $pdfName,
+                                'description' => ''
+                            ]);
+
+                            if($gprls) {
+                                session()->flash('status', 'บันทึกข้อมูลเรียบร้อย');
+                                return redirect('gprl');
+                            } else {
+                                session()->flash('status', 'บันทึกข้อมูลไม่สำเร็จ');
+                                return redirect('gprlCreate');
+                            }
+                        }
+                    }
+                }
+            } else {
+
             }
         }
 
-        $description = $dom->saveHTML();
+
 
         $user_id = Auth::user()->id;
 
@@ -243,36 +476,57 @@ class generalPressReleaseController extends Controller
         $id = $request->id;
         $gprls = GeneralPressRelease::find($id);
 
-        if(Storage::delete('public/files/images/gprls/' . $gprls->image)) {
-            if(GeneralPressRelease::destroy($id)) {
-                $dom= new DOMDocument();
-                $dom->loadHTML($gprls->description,9);
-                $images = $dom->getElementsByTagName('img');
+        if($gprls->image) {
+            if(Storage::delete('public/files/images/gprls/' . $gprls->image)) {
+                if(GeneralPressRelease::destroy($id)) {
+                    $dom= new DOMDocument();
+                    $dom->loadHTML($gprls->description,9);
+                    $images = $dom->getElementsByTagName('img');
 
-                foreach ($images as $key => $img) {
+                    foreach ($images as $key => $img) {
 
-                    $src = $img->getAttribute('src');
-                    $path = Str::of($src)->after('/');
+                        $src = $img->getAttribute('src');
+                        $path = Str::of($src)->after('/');
 
-                    if (File::exists($path)) {
-                        File::delete($path);
+                        if (File::exists($path)) {
+                            File::delete($path);
+                        }
                     }
+                    return response()->json([
+                        'status' => 200,
+                        'title' => 'Deleted!',
+                        'message' => 'ลบข้อมูล และ Image เสร็จสิ้น',
+                        'icon' => 'success'
+                    ]);
                 }
+            } else {
                 return response()->json([
-                    'status' => 200,
-                    'title' => 'Deleted!',
-                    'message' => 'ลบข้อมูล และ Image เสร็จสิ้น',
-                    'icon' => 'success'
+                    'status' => 400,
+                    'title' => 'Error!',
+                    'message' => 'ไม่มีการลบไฟล์รูปภาพ',
+                    'icon' => 'error'
                 ]);
             }
-        } else {
-            return response()->json([
-                'status' => 400,
-                'title' => 'Error!',
-                'message' => 'ไม่มีการลบไฟล์รูปภาพ',
-                'icon' => 'error'
-            ]);
+        } elseif($gprls->pdf) {
+            if(Storage::delete('public/files/pdfs/gprls/' . $gprls->pdf)) {
+                if(GeneralPressRelease::destroy($id)) {
+                    return response()->json([
+                        'status' => 200,
+                        'title' => 'Deleted!',
+                        'message' => 'ลบข้อมูล และ PDF เสร็จสิ้น',
+                        'icon' => 'success'
+                    ]);
+                }
+            } else {
+                return response()->json([
+                    'status' => 400,
+                    'title' => 'Error!',
+                    'message' => 'ไม่มีการลบไฟล์ PDF',
+                    'icon' => 'error'
+                ]);
+            }
         }
+
     }
     // Delete GeneralPressRelease End
 }

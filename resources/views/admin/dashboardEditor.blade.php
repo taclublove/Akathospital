@@ -6,7 +6,7 @@
     @yield('title')
 </head>
 
-<body style="background-color: #D3D3D3;">
+<body>
     <div class="container">
         <div class="row">
             <div class="col-md-10 offset-1 mt-4">

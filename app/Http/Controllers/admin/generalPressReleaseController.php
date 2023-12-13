@@ -24,6 +24,7 @@ class generalPressReleaseController extends Controller
         return view('admin.generalPressRelease.create', compact('users'));
     }
 
+    // FetchAll GeneralPressRelease Start
     public function gprlFetchAll() {
         $gprls = GeneralPressRelease::all();
 		$output = '';
@@ -59,17 +60,10 @@ class generalPressReleaseController extends Controller
 			echo '<h1 class="text-center text-secondary my-5">No record present in the database!</h1>';
 		}
     }
+    // FetchAll GeneralPressRelease End
 
+    // Add GeneralPressRelease Start
     public function gprlStore(Request $request) {
-
-        // $file = $request->file('image');
-        // $description = $request->description;
-
-        // if(isset($file)) {
-        //     return $file;
-        // } else {
-        //     return 'ไม่มีไฟล์ส่งเข้ามา';
-        // }
 
         $description = $request->description;
 
@@ -110,15 +104,15 @@ class generalPressReleaseController extends Controller
 
         $description = $dom->saveHTML();
 
-        $file = $request->file('image');
-        if($file) {
-            $fileExtension = $file->getClientOriginalExtension();
+        $image = $request->file('image');
+        if($image) {
+            $imageExtension = $image->getClientOriginalExtension();
 
             $allowedExtensions = ['png', 'jpg', 'jpeg'];
 
-            if(in_array(strtolower($fileExtension), $allowedExtensions)) {
-                $fileName = time() . '.' . $fileExtension;
-                $file->storeAs('public/files/gprls', $fileName);
+            if(in_array(strtolower($imageExtension), $allowedExtensions)) {
+                $imageName = time() . '.' . $imageExtension;
+                $image->storeAs('public/files/images/gprls', $imageName);
 
                 $user_id = Auth::user()->id;
 
@@ -133,7 +127,7 @@ class generalPressReleaseController extends Controller
                     $gprls = GeneralPressRelease::create([
                         'title' => $request->title,
                         'user_id' => $user_id,
-                        'image' => $fileName,
+                        'image' => $imageName,
                         'description' => $description
                     ]);
 
@@ -164,6 +158,7 @@ class generalPressReleaseController extends Controller
             }
         }
     }
+    // Add GeneralPressRelease End
 
     // Edit GeneralPressRelease Start
     public function gprlEdit($id) {
@@ -172,6 +167,7 @@ class generalPressReleaseController extends Controller
     }
     // Edit GeneralPressRelease End
 
+    // Update GeneralPressRelease Start
     public function gprlUpdate(Request $request, $id) {
         $gprls = GeneralPressRelease::find($id);
 
@@ -240,57 +236,43 @@ class generalPressReleaseController extends Controller
             }
         }
     }
+    // Update GeneralPressRelease End
 
+    // Delete GeneralPressRelease Start
     public function gprlDelete(Request $request) {
         $id = $request->id;
         $gprls = GeneralPressRelease::find($id);
 
-        if($gprls->file('image')) {
-            return response()->json([
-                'status' => 200,
-                'title' => 'Added!',
-                'message' => $gprls->file,
-                'icon' => 'success'
-            ]);
+        if(Storage::delete('public/files/images/gprls/' . $gprls->image)) {
+            if(GeneralPressRelease::destroy($id)) {
+                $dom= new DOMDocument();
+                $dom->loadHTML($gprls->description,9);
+                $images = $dom->getElementsByTagName('img');
+
+                foreach ($images as $key => $img) {
+
+                    $src = $img->getAttribute('src');
+                    $path = Str::of($src)->after('/');
+
+                    if (File::exists($path)) {
+                        File::delete($path);
+                    }
+                }
+                return response()->json([
+                    'status' => 200,
+                    'title' => 'Deleted!',
+                    'message' => 'ลบข้อมูล และ Image เสร็จสิ้น',
+                    'icon' => 'success'
+                ]);
+            }
         } else {
             return response()->json([
                 'status' => 400,
                 'title' => 'Error!',
-                'message' => 'ไม่มีข้อมูล File',
+                'message' => 'ไม่มีการลบไฟล์รูปภาพ',
                 'icon' => 'error'
             ]);
         }
-
-
-        // if(Storage::delete('public/files/gprls/' . $gprls->file)) {
-        //     if(GeneralPressRelease::destroy($id)) {
-        //         $dom= new DOMDocument();
-        //         $dom->loadHTML($gprls->description,9);
-        //         $images = $dom->getElementsByTagName('img');
-
-        //         foreach ($images as $key => $img) {
-
-        //             $src = $img->getAttribute('src');
-        //             $path = Str::of($src)->after('/');
-
-        //             if (File::exists($path)) {
-        //                 File::delete($path);
-        //             }
-        //         }
-        //         return response()->json([
-        //             'status' => 200,
-        //             'title' => 'Deleted!',
-        //             'message' => 'ลบข้อมูล และ Image เสร็จสิ้น',
-        //             'icon' => 'success'
-        //         ]);
-        //     }
-        // } else {
-        //     return response()->json([
-        //         'status' => 400,
-        //         'title' => 'Error!',
-        //         'message' => 'ไม่มีการลบไฟล์รูปภาพ',
-        //         'icon' => 'error'
-        //     ]);
-        // }
     }
+    // Delete GeneralPressRelease End
 }

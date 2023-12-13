@@ -211,7 +211,7 @@ class generalPressReleaseController extends Controller
                                     session()->flash('status', 'บันทึกข้อมูลเรียบร้อย');
                                     return redirect('gprl');
                                 } else {
-                                    session()->flash('status', 'บันทึกข้อมูลไม่สำเร็จ');
+                                    session()->flash('error', 'บันทึกข้อมูลไม่สำเร็จ');
                                     return redirect('gprlCreate');
                                 }
                             }
@@ -224,7 +224,7 @@ class generalPressReleaseController extends Controller
                         ]);
 
                         if($validatorTitle->fails()) {
-                            session()->flash('message', 'Title ของคุณสามารถตั้งได้ไม่เกิน 100 ตัวอักษร');
+                            session()->flash('error', 'Title ของคุณสามารถตั้งได้ไม่เกิน 100 ตัวอักษร');
                             return redirect('gprlCreate');
                         } else {
                             $gprls = GeneralPressRelease::create([
@@ -239,7 +239,7 @@ class generalPressReleaseController extends Controller
                                 session()->flash('status', 'บันทึกข้อมูลเรียบร้อย');
                                 return redirect('gprl');
                             } else {
-                                session()->flash('status', 'บันทึกข้อมูลไม่สำเร็จ');
+                                session()->flash('error', 'บันทึกข้อมูลไม่สำเร็จ');
                                 return redirect('gprlCreate');
                             }
                         }
@@ -248,6 +248,10 @@ class generalPressReleaseController extends Controller
             } else {
 
             }
+        } elseif($description == '' && $pdf == '') {
+            session()->flash('error', 'กรูณาเพิ่ม File Image หรือ File PDF อย่างใดอย่างนึงก่อนบันทึก');
+            // echo "<script>console.log('เงื่อนไขผ่าน')</script>";
+            return redirect('gprlCreate');
         } else {
 
         }
@@ -476,7 +480,7 @@ class generalPressReleaseController extends Controller
         $id = $request->id;
         $gprls = GeneralPressRelease::find($id);
 
-        if($gprls->image) {
+        if($gprls->image != '' && $gprls->pdf == '') {
             if(Storage::delete('public/files/images/gprls/' . $gprls->image)) {
                 if(GeneralPressRelease::destroy($id)) {
                     $dom= new DOMDocument();
@@ -507,9 +511,22 @@ class generalPressReleaseController extends Controller
                     'icon' => 'error'
                 ]);
             }
-        } elseif($gprls->pdf) {
+        } elseif($gprls->pdf != '' && $gprls->image == '') {
             if(Storage::delete('public/files/pdfs/gprls/' . $gprls->pdf)) {
                 if(GeneralPressRelease::destroy($id)) {
+                    $dom= new DOMDocument();
+                    $dom->loadHTML($gprls->description,9);
+                    $images = $dom->getElementsByTagName('img');
+
+                    foreach ($images as $key => $img) {
+
+                        $src = $img->getAttribute('src');
+                        $path = Str::of($src)->after('/');
+
+                        if (File::exists($path)) {
+                            File::delete($path);
+                        }
+                    }
                     return response()->json([
                         'status' => 200,
                         'title' => 'Deleted!',
@@ -525,8 +542,37 @@ class generalPressReleaseController extends Controller
                     'icon' => 'error'
                 ]);
             }
-        }
+        } elseif($gprls->pdf == '' && $gprls->image == '') {
+            $dom= new DOMDocument();
+            $dom->loadHTML($gprls->description,9);
+            $images = $dom->getElementsByTagName('img');
 
+            foreach ($images as $key => $img) {
+
+                $src = $img->getAttribute('src');
+                $path = Str::of($src)->after('/');
+
+                if (File::exists($path)) {
+                    File::delete($path);
+                }
+            }
+
+            if(GeneralPressRelease::destroy($id)) {
+                return response()->json([
+                    'status' => 200,
+                    'title' => 'Deleted!',
+                    'message' => 'ลบข้อมูลที่ไม่มี Image และ PDF เสร็จสิ้น',
+                    'icon' => 'success'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 400,
+                    'title' => 'Error!',
+                    'message' => 'ลบข้อมูลไม่สำเร็จ',
+                    'icon' => 'error'
+                ]);
+            }
+        }
     }
     // Delete GeneralPressRelease End
 }

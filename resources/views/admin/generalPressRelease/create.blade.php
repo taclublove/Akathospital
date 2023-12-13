@@ -62,7 +62,7 @@
             </div>
         </div>
     </form>
-    @if (session('status'))
+    @if (session('error'))
         <!-- Modal -->
         <div class="modal fade" id="refreshModal" tabindex="-1" aria-labelledby="refreshModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -72,7 +72,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        {{ session('status') }}
+                        {{ session('error') }}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
@@ -85,6 +85,16 @@
 
 @section('script')
     <script>
+
+        setTimeout(function() {
+            document.querySelector('.alert').style.display = 'none';
+        }, 1000);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show the modal when the page is loaded
+            var myModal = new bootstrap.Modal(document.getElementById('refreshModal'));
+            myModal.show();
+        });
 
         // คำสั่งการนำ ID มากำหนดเมื่อมีการ Click เพื่อเลือกระหว่าง : ต้องการเพิ่มภาพหน้าปก กับ ไม่ต้องการเพิ่มภาพหน้าปก Start
             // ดึง ID ของปุ่มต้องการเพิ่มภาพหน้าปก

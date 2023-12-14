@@ -90,10 +90,23 @@
             document.querySelector('.alert').style.display = 'none';
         }, 1000);
 
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     // Show the modal when the page is loaded
+        //     var myModal = new bootstrap.Modal(document.getElementById('refreshModal'));
+        //     myModal.show();
+        // });
+
         document.addEventListener('DOMContentLoaded', function() {
-            // Show the modal when the page is loaded
-            var myModal = new bootstrap.Modal(document.getElementById('refreshModal'));
-            myModal.show();
+            if(!sessionStorage.getItem('modalShown')) {
+                var myModal = new bootstrap.Modal(document.getElementById('refreshModal'));
+                myModal.show();
+
+                sessionStorage.setItem('modalShown', 'true');
+            }
+
+            window.addEventListener('beforeunload', function() {
+                sessionStorage.removeItem('modalShown');
+            });
         });
 
         // คำสั่งการนำ ID มากำหนดเมื่อมีการ Click เพื่อเลือกระหว่าง : ต้องการเพิ่มภาพหน้าปก กับ ไม่ต้องการเพิ่มภาพหน้าปก Start

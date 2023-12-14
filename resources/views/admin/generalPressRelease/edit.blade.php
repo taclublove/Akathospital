@@ -6,7 +6,7 @@
 
 @section('content')
     <h1 class="text-center">แก้ไขข้อมูลข่าวประชาสัมพันธ์ทั่วไป</h1>
-    <form method="POST" action="{{ route('gprlUpdate', ['id' => $gprls->id]) }}" id="gprlForm">
+    <form method="POST" action="{{ route('gprlUpdate', ['id' => $gprls->id]) }}" id="gprlForm" enctype="multipart/form-data">
         @csrf
         <div class="form-floating my-3">
             <input type="text" class="form-control" id="title" name="title" placeholder="title" value="{{ $gprls->title }}" required>
@@ -32,29 +32,32 @@
             </div>
         </div>
 
-        @if($gprls->description != '' && $gprls->pdf == '')
-        <div class="mb-3" id="addImage">
-            <input type="file" class="form-control" name="image" id="image">
-            <div id="image"></div>
-        </div>
-        @endif
+        {{-- @if($gprls->description == '' || $gprls->pdf == '') --}}
+            <div class="mb-3" id="addImage">
+                <input type="file" class="form-control" name="image" id="image">
+                @if($gprls->description !='' && $gprls->pdf == '')
+                    <img src="{{ asset('storage/files/images/gprls/' . $gprls->image) }}" class="mt-2" width="10%" alt="">
+                @endif
+            </div>
+        {{-- @endif --}}
 
         <hr>
 
         <label class="form-check-label mb-1" for="inlineRadio1">ส่วนที่ 2</label>
-        @if($gprls->pdf != '' && $gprls->description == '')
+        {{-- @if($gprls->pdf != '' && $gprls->description == '') --}}
         <div class="mb-3" id="addPDF">
             <label class="form-check-label mb-1" for="inlineRadio1">เพิ่ม File PDF ด้านล่าง</label>
-            <input type="file" class="form-control" name="pdf" id="pdf">
+            <input type="file" class="form-control" value="{{ $gprls->pdf }}" name="pdf" id="pdf">
+            <div class="mt-2">{{ $gprls->pdf }}</div>
         </div>
-        @endif
+        {{-- @endif --}}
 
-        @if($gprls->description != '' && $gprls->pdf == '')
+        {{-- @if($gprls->description != '' && $gprls->pdf == '') --}}
             <div class="form-group" id="addEditor">
                 <label class="form-check-label mb-1" for="inlineRadio1">สร้างหน้าข่าวสารด้านล่าง</label>
-                <textarea class="form-control" name="description" id="summernote">{{ $gprls->description }}</textarea>
+                <textarea class="form-control" name="description" id="summernote" value="{{ $gprls->description }}">{{ $gprls->description }}</textarea>
             </div>
-        @endif
+        {{-- @endif --}}
 
         <hr>
 
@@ -67,7 +70,7 @@
             </div>
         </div>
     </form>
-    @if (session('status'))
+    @if (session('error'))
         <div class="modal fade" id="refreshModal" tabindex="-1" aria-labelledby="refreshModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -76,7 +79,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        {{ session('status') }}
+                        {{ session('error') }}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
@@ -89,6 +92,28 @@
 
 @section('script')
     <script>
+        setTimeout(function() {
+            document.querySelector('.alert').style.display = 'none';
+        }, 1000);
+
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     // Show the modal when the page is loaded
+        //     var myModal = new bootstrap.Modal(document.getElementById('refreshModal'));
+        //     myModal.show();
+        // });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if(!sessionStorage.getItem('modalShown')) {
+                var myModal = new bootstrap.Modal(document.getElementById('refreshModal'));
+                myModal.show();
+
+                sessionStorage.setItem('modalShown', 'true');
+            }
+
+            window.addEventListener('beforeunload', function() {
+                sessionStorage.removeItem('modalShown');
+            });
+        });
 
         // คำสั่งการนำ ID มากำหนดเมื่อมีการ Click เพื่อเลือกระหว่าง : ต้องการเพิ่มภาพหน้าปก กับ ไม่ต้องการเพิ่มภาพหน้าปก Start
             // ดึง ID ของปุ่มต้องการเพิ่มภาพหน้าปก
@@ -104,11 +129,11 @@
 
             // ปิดการแสดงผลของ input type file Start
                 // ปิดการแสดงผลของ Item ที่มี ID addImage
-                // addImage.style.display = 'none';
+                addImage.style.display = 'none';
                 // ปิดการแสดงผลของ Item ที่มี ID addPDF
-                // addPDF.style.display = 'none';
+                addPDF.style.display = 'none';
                 // ปิดการแสดงผลของ Item ที่มี ID addEditor
-                // addEditor.style.display = 'none';
+                addEditor.style.display = 'none';
             // ปิดการแสดงผลของ input type file End
 
             // เป็นการตรวจเช็คปุ่มไม่ต้องการเพิ่มภาพหน้าปก = จริง เพื่อที่จะไม่ให้แสดงผลเมื่อมีการเปิดมายังหน้านี้

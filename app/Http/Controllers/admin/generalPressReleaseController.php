@@ -83,31 +83,23 @@ class generalPressReleaseController extends Controller
             if($description) {
                 // สร้าง Object ของ Class DOMDocument
                 $dom = new DOMDocument();
-
                 // เข้าถึงการ loadHTML เพื่อโหลดเนื้อหา HTML ลงใน Object DOMDocument
                 // LIBXML_HTML_NOIMPLIED = ไม่เพิ่ม <html> และ <body> โดยอัตโนมัติ
                 // LIBXML_HTML_NODEFDTD = ไม่เพิ่ม DTD (Document Type Definition) โดยอัตโนมัติ
                 $dom->loadHTML('<?xml encoding="UTF-8">' . $description, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
                 // ตัวแปรที่เก็บข้อมูลจากการเข้าถึงของ DOMDocument เข้าถึง Tag ของ img ที่มาจาก Editor ไปเก็บไว้ในตัวแปร $images
                 $images = $dom->getElementsByTagName('img');
-
                 foreach ($images as $key => $img) {
                     // ตัวแปร src เข้าถึง Attribute ของ src ที่อยู่ใน Tag ของ img
                     $src = $img->getAttribute('src');
-
                     if (strpos($src, 'data:image/') === 0) {
                         $srcParts = explode(';', $src);
-
                         if (isset($srcParts[1])) {
                             $base64Data = explode(',', $srcParts[1]);
-
                             if (isset($base64Data[1])) {
                                 $data = base64_decode($base64Data[1]);
-
                                 $image_name = "/uploadGprl/" . time(). $key.'.png';
                                 file_put_contents(public_path().$image_name, $data);
-
                                 $img->removeAttribute('src');
                                 $img->setAttribute('src', $image_name);
                             } else {
@@ -237,22 +229,85 @@ class generalPressReleaseController extends Controller
             if($gprls->pdf != '') {
                 session()->flash('error', 'มีข้อมูล pdf ตัวเก่าบน database');
                 return redirect('gprlEdit/' . $id);
+                Storage::delete('public/files/pdfs/gprls/' . $gprls->pdf);
+                if($request->hasFile('image')) {
+                    $imageFile = $request->file('image');
+                    $imageExtensions = $imageFile->getClientOriginalExtension();
+                    $allowedExtensions = ['png', 'jpeg', 'jpg'];
+                    if(in_array(strtolower($imageExtensions), $allowedExtensions)) {
+                        $imageName = time() . '.' . $imageExtensions;
+                        $imageFile->storeAs('public/files/images/gprls', $imageName);
+                        $dom = new DOMDocument();
+                        // เข้าถึงการ loadHTML เพื่อโหลดเนื้อหา HTML ลงใน Object DOMDocument
+                        // LIBXML_HTML_NOIMPLIED = ไม่เพิ่ม <html> และ <body> โดยอัตโนมัติ
+                        // LIBXML_HTML_NODEFDTD = ไม่เพิ่ม DTD (Document Type Definition) โดยอัตโนมัติ
+                        $dom->loadHTML('<?xml encoding="UTF-8">' . $description, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                        // ตัวแปรที่เก็บข้อมูลจากการเข้าถึงของ DOMDocument เข้าถึง Tag ของ img ที่มาจาก Editor ไปเก็บไว้ในตัวแปร $images
+                        $images = $dom->getElementsByTagName('img');
+                        foreach ($images as $key => $img) {
+                            // ตัวแปร src เข้าถึง Attribute ของ src ที่อยู่ใน Tag ของ img
+                            $src = $img->getAttribute('src');
+                            if (strpos($src, 'data:image/') === 0) {
+                                $srcParts = explode(';', $src);
+                                if (isset($srcParts[1])) {
+                                    $base64Data = explode(',', $srcParts[1]);
+                                    if (isset($base64Data[1])) {
+                                        $data = base64_decode($base64Data[1]);
+                                        $image_name = "/uploadGprl/" . time(). $key.'.png';
+                                        file_put_contents(public_path().$image_name, $data);
+                                        $img->removeAttribute('src');
+                                        $img->setAttribute('src', $image_name);
+                                    } else {
+                                        // กรณี $base64Data ไม่มีตำแหน่งที่ 1
+                                        echo "Invalid base64 data format for image at index $key";
+                                    }
+                                } else {
+                                    // กรณี $srcParts ไม่มีตำแหน่งที่ 1
+                                    echo "Invalid src format for image at index $key";
+                                }
+                            }
+                        }
+                        $description = $dom->saveHTML();
+                    }
+                } else {
+                    session()->flash('error', 'ไม่มีไฟล์ภาพหน้าปกกรุณาเพิ่มไฟล์ภาพหน้าปกก่อนบันทึก');
+                    return redirect('gprlEdit/' . $id);
+                }
+
             // Check ตรวจสอบเมื่อมีการส่ง request ที่มี File เข้ามาให้ทำตามกระบวนการด้านล่าง Start
             } elseif($request->hasFile('pdf')) {
                 // Delete image ใน Editor Start
-                $dom= new DOMDocument();
-                $dom->loadHTML($gprls->description,9);
+                $dom = new DOMDocument();
+                // เข้าถึงการ loadHTML เพื่อโหลดเนื้อหา HTML ลงใน Object DOMDocument
+                // LIBXML_HTML_NOIMPLIED = ไม่เพิ่ม <html> และ <body> โดยอัตโนมัติ
+                // LIBXML_HTML_NODEFDTD = ไม่เพิ่ม DTD (Document Type Definition) โดยอัตโนมัติ
+                $dom->loadHTML('<?xml encoding="UTF-8">' . $description, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                // ตัวแปรที่เก็บข้อมูลจากการเข้าถึงของ DOMDocument เข้าถึง Tag ของ img ที่มาจาก Editor ไปเก็บไว้ในตัวแปร $images
                 $images = $dom->getElementsByTagName('img');
-
                 foreach ($images as $key => $img) {
-
+                    // ตัวแปร src เข้าถึง Attribute ของ src ที่อยู่ใน Tag ของ img
                     $src = $img->getAttribute('src');
-                    $path = Str::of($src)->after('/');
-
-                    if (File::exists($path)) {
-                        File::delete($path);
+                    if (strpos($src, 'data:image/') === 0) {
+                        $srcParts = explode(';', $src);
+                        if (isset($srcParts[1])) {
+                            $base64Data = explode(',', $srcParts[1]);
+                            if (isset($base64Data[1])) {
+                                $data = base64_decode($base64Data[1]);
+                                $image_name = "/uploadGprl/" . time(). $key.'.png';
+                                file_put_contents(public_path().$image_name, $data);
+                                $img->removeAttribute('src');
+                                $img->setAttribute('src', $image_name);
+                            } else {
+                                // กรณี $base64Data ไม่มีตำแหน่งที่ 1
+                                echo "Invalid base64 data format for image at index $key";
+                            }
+                        } else {
+                            // กรณี $srcParts ไม่มีตำแหน่งที่ 1
+                            echo "Invalid src format for image at index $key";
+                        }
                     }
                 }
+                $description = $dom->saveHTML();
                 // Delete image ใน Editor End
 
                 // Check & Delete รูปภาพหน้าปก Start
@@ -302,11 +357,14 @@ class generalPressReleaseController extends Controller
                 }
                 // Check & Delete รูปภาพหน้าปก End
             // Check ตรวจสอบเมื่อมีการส่ง request ที่มี File เข้ามาให้ทำตามกระบวนการด้านล่าง End
+
+            // Check ตรวจสอบเมื่อมีการแก้ไขแค่ Image Title และ description โดยไม่มีการเพิ่ม File PDF ถึงเข้าเงื่อนไขด้านล่าง Start
             } else {
                 if($request->hasFile('image')) {
                     // session()->flash('error', 'มีไฟล์ Image ตัวใหม่ส่งเข้ามา');
                     // return redirect('gprlEdit/' . $id);
                     $imageFile = $request->file('image');
+                    Storage::delete('public/files/images/gprls/' . $gprls->image);
                     if($imageFile) {
                         $imageExtensions = $imageFile->getClientOriginalExtension();
                         $allowedExtensions = ['png', 'jpeg', 'jpg'];
@@ -315,19 +373,37 @@ class generalPressReleaseController extends Controller
                             $imageFile->storeAs('public/files/images/gprls', $imageName);
 
                             // Delete image ใน Editor Start
-                            $dom= new DOMDocument();
-                            $dom->loadHTML($gprls->description,9);
+                            $dom = new DOMDocument();
+                            // เข้าถึงการ loadHTML เพื่อโหลดเนื้อหา HTML ลงใน Object DOMDocument
+                            // LIBXML_HTML_NOIMPLIED = ไม่เพิ่ม <html> และ <body> โดยอัตโนมัติ
+                            // LIBXML_HTML_NODEFDTD = ไม่เพิ่ม DTD (Document Type Definition) โดยอัตโนมัติ
+                            $dom->loadHTML('<?xml encoding="UTF-8">' . $description, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                            // ตัวแปรที่เก็บข้อมูลจากการเข้าถึงของ DOMDocument เข้าถึง Tag ของ img ที่มาจาก Editor ไปเก็บไว้ในตัวแปร $images
                             $images = $dom->getElementsByTagName('img');
-
                             foreach ($images as $key => $img) {
-
+                                // ตัวแปร src เข้าถึง Attribute ของ src ที่อยู่ใน Tag ของ img
                                 $src = $img->getAttribute('src');
-                                $path = Str::of($src)->after('/');
-
-                                if (File::exists($path)) {
-                                    File::delete($path);
+                                if (strpos($src, 'data:image/') === 0) {
+                                    $srcParts = explode(';', $src);
+                                    if (isset($srcParts[1])) {
+                                        $base64Data = explode(',', $srcParts[1]);
+                                        if (isset($base64Data[1])) {
+                                            $data = base64_decode($base64Data[1]);
+                                            $image_name = "/uploadGprl/" . time(). $key.'.png';
+                                            file_put_contents(public_path().$image_name, $data);
+                                            $img->removeAttribute('src');
+                                            $img->setAttribute('src', $image_name);
+                                        } else {
+                                            // กรณี $base64Data ไม่มีตำแหน่งที่ 1
+                                            echo "Invalid base64 data format for image at index $key";
+                                        }
+                                    } else {
+                                        // กรณี $srcParts ไม่มีตำแหน่งที่ 1
+                                        echo "Invalid src format for image at index $key";
+                                    }
                                 }
                             }
+                            $description = $dom->saveHTML();
                             // Delete image ใน Editor End
 
                             $user_id = Auth::user()->id;
@@ -357,28 +433,46 @@ class generalPressReleaseController extends Controller
                                 }
                             }
                         } else {
-                            session()->flash('error', 'สกุล File ไม่ถูกต้องกรุณาใช้สกุล File [ pdf ]');
+                            session()->flash('error', 'สกุล File ไม่ถูกต้องกรุณาใช้สกุล File [ png, jpeg, jpg ]');
                             return redirect('gprlEdit/' . $id);
                         }
                     } else {
-                        session()->flash('error', 'ไม่มี File PDF กรุณาเพิ่ม File');
+                        session()->flash('error', 'ไม่มี File Image กรุณาเพิ่ม File');
                         return redirect('gprlEdit/' . $id);
                     }
                 } elseif($gprls->image) {
                     // Delete image ใน Editor Start
-                    $dom= new DOMDocument();
-                    $dom->loadHTML($gprls->description,9);
+                    $dom = new DOMDocument();
+                    // เข้าถึงการ loadHTML เพื่อโหลดเนื้อหา HTML ลงใน Object DOMDocument
+                    // LIBXML_HTML_NOIMPLIED = ไม่เพิ่ม <html> และ <body> โดยอัตโนมัติ
+                    // LIBXML_HTML_NODEFDTD = ไม่เพิ่ม DTD (Document Type Definition) โดยอัตโนมัติ
+                    $dom->loadHTML('<?xml encoding="UTF-8">' . $description, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                    // ตัวแปรที่เก็บข้อมูลจากการเข้าถึงของ DOMDocument เข้าถึง Tag ของ img ที่มาจาก Editor ไปเก็บไว้ในตัวแปร $images
                     $images = $dom->getElementsByTagName('img');
-
                     foreach ($images as $key => $img) {
-
+                        // ตัวแปร src เข้าถึง Attribute ของ src ที่อยู่ใน Tag ของ img
                         $src = $img->getAttribute('src');
-                        $path = Str::of($src)->after('/');
-
-                        if (File::exists($path)) {
-                            File::delete($path);
+                        if (strpos($src, 'data:image/') === 0) {
+                            $srcParts = explode(';', $src);
+                            if (isset($srcParts[1])) {
+                                $base64Data = explode(',', $srcParts[1]);
+                                if (isset($base64Data[1])) {
+                                    $data = base64_decode($base64Data[1]);
+                                    $image_name = "/uploadGprl/" . time(). $key.'.png';
+                                    file_put_contents(public_path().$image_name, $data);
+                                    $img->removeAttribute('src');
+                                    $img->setAttribute('src', $image_name);
+                                } else {
+                                    // กรณี $base64Data ไม่มีตำแหน่งที่ 1
+                                    echo "Invalid base64 data format for image at index $key";
+                                }
+                            } else {
+                                // กรณี $srcParts ไม่มีตำแหน่งที่ 1
+                                echo "Invalid src format for image at index $key";
+                            }
                         }
                     }
+                    $description = $dom->saveHTML();
                     // Delete image ใน Editor End
                     $user_id = Auth::user()->id;
 
@@ -411,6 +505,7 @@ class generalPressReleaseController extends Controller
                     return redirect('gprlEdit/' . $id);
                 }
             }
+            // Check ตรวจสอบเมื่อมีการแก้ไขแค่ Image Title และ description โดยไม่มีการเพิ่ม File PDF ถึงเข้าเงื่อนไขด้านล่าง End
         }
     }
     // Update GeneralPressRelease End

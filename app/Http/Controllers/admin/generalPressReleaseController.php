@@ -98,7 +98,7 @@ class generalPressReleaseController extends Controller
                             $base64Data = explode(',', $srcParts[1]);
                             if (isset($base64Data[1])) {
                                 $data = base64_decode($base64Data[1]);
-                                $image_name = "/uploadGprl/" . time(). $key.'.png';
+                                $image_name = "/uploads/gprls/" . time(). $key.'.png';
                                 file_put_contents(public_path().$image_name, $data);
                                 $img->removeAttribute('src');
                                 $img->setAttribute('src', $image_name);
@@ -247,23 +247,28 @@ class generalPressReleaseController extends Controller
                         foreach ($images as $key => $img) {
                             // ตัวแปร src เข้าถึง Attribute ของ src ที่อยู่ใน Tag ของ img
                             $src = $img->getAttribute('src');
-                            if (strpos($src, 'data:image/') === 0) {
-                                $srcParts = explode(';', $src);
-                                if (isset($srcParts[1])) {
-                                    $base64Data = explode(',', $srcParts[1]);
-                                    if (isset($base64Data[1])) {
-                                        $data = base64_decode($base64Data[1]);
-                                        $image_name = "/uploadGprl/" . time(). $key.'.png';
-                                        file_put_contents(public_path().$image_name, $data);
-                                        $img->removeAttribute('src');
-                                        $img->setAttribute('src', $image_name);
+                            $path = Str::of($src)->after('/');
+
+                            if (File::exists($path)) {
+                                File::delete($path);
+                                if (strpos($src, 'data:image/') === 0) {
+                                    $srcParts = explode(';', $src);
+                                    if (isset($srcParts[1])) {
+                                        $base64Data = explode(',', $srcParts[1]);
+                                        if (isset($base64Data[1])) {
+                                            $data = base64_decode($base64Data[1]);
+                                            $image_name = "/uploads/gprls/" . time(). $key.'.png';
+                                            file_put_contents(public_path().$image_name, $data);
+                                            $img->removeAttribute('src');
+                                            $img->setAttribute('src', $image_name);
+                                        } else {
+                                            // กรณี $base64Data ไม่มีตำแหน่งที่ 1
+                                            echo "Invalid base64 data format for image at index $key";
+                                        }
                                     } else {
-                                        // กรณี $base64Data ไม่มีตำแหน่งที่ 1
-                                        echo "Invalid base64 data format for image at index $key";
+                                        // กรณี $srcParts ไม่มีตำแหน่งที่ 1
+                                        echo "Invalid src format for image at index $key";
                                     }
-                                } else {
-                                    // กรณี $srcParts ไม่มีตำแหน่งที่ 1
-                                    echo "Invalid src format for image at index $key";
                                 }
                             }
                         }
@@ -287,23 +292,28 @@ class generalPressReleaseController extends Controller
                 foreach ($images as $key => $img) {
                     // ตัวแปร src เข้าถึง Attribute ของ src ที่อยู่ใน Tag ของ img
                     $src = $img->getAttribute('src');
-                    if (strpos($src, 'data:image/') === 0) {
-                        $srcParts = explode(';', $src);
-                        if (isset($srcParts[1])) {
-                            $base64Data = explode(',', $srcParts[1]);
-                            if (isset($base64Data[1])) {
-                                $data = base64_decode($base64Data[1]);
-                                $image_name = "/uploadGprl/" . time(). $key.'.png';
-                                file_put_contents(public_path().$image_name, $data);
-                                $img->removeAttribute('src');
-                                $img->setAttribute('src', $image_name);
+                    $path = Str::of($src)->after('/');
+
+                    if (File::exists($path)) {
+                        File::delete($path);
+                        if (strpos($src, 'data:image/') === 0) {
+                            $srcParts = explode(';', $src);
+                            if (isset($srcParts[1])) {
+                                $base64Data = explode(',', $srcParts[1]);
+                                if (isset($base64Data[1])) {
+                                    $data = base64_decode($base64Data[1]);
+                                    $image_name = "/uploads/gprls/" . time(). $key.'.png';
+                                    file_put_contents(public_path().$image_name, $data);
+                                    $img->removeAttribute('src');
+                                    $img->setAttribute('src', $image_name);
+                                } else {
+                                    // กรณี $base64Data ไม่มีตำแหน่งที่ 1
+                                    echo "Invalid base64 data format for image at index $key";
+                                }
                             } else {
-                                // กรณี $base64Data ไม่มีตำแหน่งที่ 1
-                                echo "Invalid base64 data format for image at index $key";
+                                // กรณี $srcParts ไม่มีตำแหน่งที่ 1
+                                echo "Invalid src format for image at index $key";
                             }
-                        } else {
-                            // กรณี $srcParts ไม่มีตำแหน่งที่ 1
-                            echo "Invalid src format for image at index $key";
                         }
                     }
                 }
@@ -383,23 +393,28 @@ class generalPressReleaseController extends Controller
                             foreach ($images as $key => $img) {
                                 // ตัวแปร src เข้าถึง Attribute ของ src ที่อยู่ใน Tag ของ img
                                 $src = $img->getAttribute('src');
-                                if (strpos($src, 'data:image/') === 0) {
-                                    $srcParts = explode(';', $src);
-                                    if (isset($srcParts[1])) {
-                                        $base64Data = explode(',', $srcParts[1]);
-                                        if (isset($base64Data[1])) {
-                                            $data = base64_decode($base64Data[1]);
-                                            $image_name = "/uploadGprl/" . time(). $key.'.png';
-                                            file_put_contents(public_path().$image_name, $data);
-                                            $img->removeAttribute('src');
-                                            $img->setAttribute('src', $image_name);
+                                $path = Str::of($src)->after('/');
+
+                                if (File::exists($path)) {
+                                    File::delete($path);
+                                    if (strpos($src, 'data:image/') === 0) {
+                                        $srcParts = explode(';', $src);
+                                        if (isset($srcParts[1])) {
+                                            $base64Data = explode(',', $srcParts[1]);
+                                            if (isset($base64Data[1])) {
+                                                $data = base64_decode($base64Data[1]);
+                                                $image_name = "/uploads/gprls/" . time(). $key.'.png';
+                                                file_put_contents(public_path().$image_name, $data);
+                                                $img->removeAttribute('src');
+                                                $img->setAttribute('src', $image_name);
+                                            } else {
+                                                // กรณี $base64Data ไม่มีตำแหน่งที่ 1
+                                                echo "Invalid base64 data format for image at index $key";
+                                            }
                                         } else {
-                                            // กรณี $base64Data ไม่มีตำแหน่งที่ 1
-                                            echo "Invalid base64 data format for image at index $key";
+                                            // กรณี $srcParts ไม่มีตำแหน่งที่ 1
+                                            echo "Invalid src format for image at index $key";
                                         }
-                                    } else {
-                                        // กรณี $srcParts ไม่มีตำแหน่งที่ 1
-                                        echo "Invalid src format for image at index $key";
                                     }
                                 }
                             }
@@ -452,23 +467,28 @@ class generalPressReleaseController extends Controller
                     foreach ($images as $key => $img) {
                         // ตัวแปร src เข้าถึง Attribute ของ src ที่อยู่ใน Tag ของ img
                         $src = $img->getAttribute('src');
-                        if (strpos($src, 'data:image/') === 0) {
-                            $srcParts = explode(';', $src);
-                            if (isset($srcParts[1])) {
-                                $base64Data = explode(',', $srcParts[1]);
-                                if (isset($base64Data[1])) {
-                                    $data = base64_decode($base64Data[1]);
-                                    $image_name = "/uploadGprl/" . time(). $key.'.png';
-                                    file_put_contents(public_path().$image_name, $data);
-                                    $img->removeAttribute('src');
-                                    $img->setAttribute('src', $image_name);
+                        $path = Str::of($src)->after('/');
+
+                        if (File::exists($path)) {
+                            File::delete($path);
+                            if (strpos($src, 'data:image/') === 0) {
+                                $srcParts = explode(';', $src);
+                                if (isset($srcParts[1])) {
+                                    $base64Data = explode(',', $srcParts[1]);
+                                    if (isset($base64Data[1])) {
+                                        $data = base64_decode($base64Data[1]);
+                                        $image_name = "/uploads/gprls/" . time(). $key.'.png';
+                                        file_put_contents(public_path().$image_name, $data);
+                                        $img->removeAttribute('src');
+                                        $img->setAttribute('src', $image_name);
+                                    } else {
+                                        // กรณี $base64Data ไม่มีตำแหน่งที่ 1
+                                        echo "Invalid base64 data format for image at index $key";
+                                    }
                                 } else {
-                                    // กรณี $base64Data ไม่มีตำแหน่งที่ 1
-                                    echo "Invalid base64 data format for image at index $key";
+                                    // กรณี $srcParts ไม่มีตำแหน่งที่ 1
+                                    echo "Invalid src format for image at index $key";
                                 }
-                            } else {
-                                // กรณี $srcParts ไม่มีตำแหน่งที่ 1
-                                echo "Invalid src format for image at index $key";
                             }
                         }
                     }

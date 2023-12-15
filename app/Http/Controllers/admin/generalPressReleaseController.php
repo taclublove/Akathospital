@@ -309,6 +309,50 @@ class generalPressReleaseController extends Controller
                 } elseif($gprls->image) {
                     session()->flash('error', 'มีไฟล์ Image ตัวเก่าส่งเข้ามา');
                     return redirect('gprlEdit/' . $id);
+                    // Delete image ใน Editor Start
+                    $dom= new DOMDocument();
+                    $dom->loadHTML($gprls->description,9);
+                    $images = $dom->getElementsByTagName('img');
+
+                    foreach ($images as $key => $img) {
+
+                        $src = $img->getAttribute('src');
+                        $path = Str::of($src)->after('/');
+
+                        if (File::exists($path)) {
+                            File::delete($path);
+                        }
+                    }
+                    // Delete image ใน Editor End
+                    $user_id = Auth::user()->id;
+
+                    $validatorTitle = Validator::make($request->all(), [
+                        'title' => ['required', 'string', 'max:100'],
+                    ]);
+
+                    if($validatorTitle->fails()) {
+                        session()->flash('error', 'Title ของคุณสามารถตั้งได้ไม่เกิน 100 ตัวอักษร');
+                        return redirect('gprlEdit/' . $id);
+                    } else {
+                        $gprls->update([
+                            'title' => $request->title,
+                            'user_id' => $user_id,
+                            'image' => $request->image,
+                            'pdf' => '',
+                            'description' => $description
+                        ]);
+
+                        if($gprls) {
+                            session()->flash('status', 'บันทึกข้อมูลเรียบร้อย');
+                            return redirect('gprl');
+                        } else {
+                            session()->flash('error', 'บันทึกข้อมูลไม่สำเร็จ');
+                            return redirect('gprlEdit/' . $id);
+                        }
+                    }
+                } else {
+                    session()->flash('error', 'ไม่เข้าเงื่อนไขทั้ง 2');
+                    return redirect('gprlEdit/' . $id);
                 }
             }
         }

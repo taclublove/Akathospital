@@ -304,11 +304,67 @@ class generalPressReleaseController extends Controller
             // Check ตรวจสอบเมื่อมีการส่ง request ที่มี File เข้ามาให้ทำตามกระบวนการด้านล่าง End
             } else {
                 if($request->hasFile('image')) {
-                    session()->flash('error', 'มีไฟล์ Image ตัวใหม่ส่งเข้ามา');
-                    return redirect('gprlEdit/' . $id);
+                    // session()->flash('error', 'มีไฟล์ Image ตัวใหม่ส่งเข้ามา');
+                    // return redirect('gprlEdit/' . $id);
+                    $imageFile = $request->file('image');
+                    if($imageFile) {
+                        $imageExtensions = $imageFile->getClientOriginalExtension();
+                        $allowedExtensions = ['png', 'jpeg', 'jpg'];
+                        if(in_array(strtolower($imageExtensions), $allowedExtensions)) {
+                            $imageName = time() . '.' . $imageExtensions;
+                            $imageFile->storeAs('public/files/images/gprls', $imageName);
+
+                            // Delete image ใน Editor Start
+                            $dom= new DOMDocument();
+                            $dom->loadHTML($gprls->description,9);
+                            $images = $dom->getElementsByTagName('img');
+
+                            foreach ($images as $key => $img) {
+
+                                $src = $img->getAttribute('src');
+                                $path = Str::of($src)->after('/');
+
+                                if (File::exists($path)) {
+                                    File::delete($path);
+                                }
+                            }
+                            // Delete image ใน Editor End
+
+                            $user_id = Auth::user()->id;
+
+                            $validatorTitle = Validator::make($request->all(), [
+                                'title' => ['required', 'string', 'max:100'],
+                            ]);
+
+                            if($validatorTitle->fails()) {
+                                session()->flash('error', 'Title ของคุณสามารถตั้งได้ไม่เกิน 100 ตัวอักษร');
+                                return redirect('gprlEdit/' . $id);
+                            } else {
+                                $gprls->update([
+                                    'title' => $request->title,
+                                    'user_id' => $user_id,
+                                    'image' => $imageName,
+                                    'pdf' => '',
+                                    'description' => $description
+                                ]);
+
+                                if($gprls) {
+                                    session()->flash('status', 'บันทึกข้อมูลเรียบร้อย');
+                                    return redirect('gprl');
+                                } else {
+                                    session()->flash('error', 'บันทึกข้อมูลไม่สำเร็จ');
+                                    return redirect('gprlEdit/' . $id);
+                                }
+                            }
+                        } else {
+                            session()->flash('error', 'สกุล File ไม่ถูกต้องกรุณาใช้สกุล File [ pdf ]');
+                            return redirect('gprlEdit/' . $id);
+                        }
+                    } else {
+                        session()->flash('error', 'ไม่มี File PDF กรุณาเพิ่ม File');
+                        return redirect('gprlEdit/' . $id);
+                    }
                 } elseif($gprls->image) {
-                    session()->flash('error', 'มีไฟล์ Image ตัวเก่าส่งเข้ามา');
-                    return redirect('gprlEdit/' . $id);
                     // Delete image ใน Editor Start
                     $dom= new DOMDocument();
                     $dom->loadHTML($gprls->description,9);
@@ -337,7 +393,7 @@ class generalPressReleaseController extends Controller
                         $gprls->update([
                             'title' => $request->title,
                             'user_id' => $user_id,
-                            'image' => $request->image,
+                            'image' => $gprls->image,
                             'pdf' => '',
                             'description' => $description
                         ]);

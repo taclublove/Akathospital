@@ -303,8 +303,13 @@ class generalPressReleaseController extends Controller
                 // Check & Delete รูปภาพหน้าปก End
             // Check ตรวจสอบเมื่อมีการส่ง request ที่มี File เข้ามาให้ทำตามกระบวนการด้านล่าง End
             } else {
-                session()->flash('error', 'ไม่มีการส่งข้อมูลของ File pdf มาเลย');
-                return redirect('gprlEdit/' . $id);
+                if($request->hasFile('image')) {
+                    session()->flash('error', 'มีไฟล์ Image ตัวใหม่ส่งเข้ามา');
+                    return redirect('gprlEdit/' . $id);
+                } elseif($gprls->image) {
+                    session()->flash('error', 'มีไฟล์ Image ตัวเก่าส่งเข้ามา');
+                    return redirect('gprlEdit/' . $id);
+                }
             }
         }
     }

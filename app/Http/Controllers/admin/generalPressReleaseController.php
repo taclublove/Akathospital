@@ -226,9 +226,8 @@ class generalPressReleaseController extends Controller
         $pdf = $request->pdf;
 
         if(isset($description)) {
+            // Check ตรวจสอบเมื่อมีการส่ง request ที่มี File ตัวเก่าที่เคยบันทึกลง Database ถึงเข้าเงื่อนไขด้านล่าง Start
             if($gprls->pdf != '') {
-                session()->flash('error', 'มีข้อมูล pdf ตัวเก่าบน database');
-                return redirect('gprlEdit/' . $id);
                 Storage::delete('public/files/pdfs/gprls/' . $gprls->pdf);
                 if($request->hasFile('image')) {
                     $imageFile = $request->file('image');
@@ -273,11 +272,38 @@ class generalPressReleaseController extends Controller
                             }
                         }
                         $description = $dom->saveHTML();
+                        $user_id = Auth::user()->id;
+
+                        $validatorTitle = Validator::make($request->all(), [
+                            'title' => ['required', 'string', 'max:100'],
+                        ]);
+
+                        if($validatorTitle->fails()) {
+                            session()->flash('error', 'Title ของคุณสามารถตั้งได้ไม่เกิน 100 ตัวอักษร');
+                            return redirect('gprlEdit/' . $id);
+                        } else {
+                            $gprls->update([
+                                'title' => $request->title,
+                                'user_id' => $user_id,
+                                'image' => $imageName,
+                                'pdf' => '',
+                                'description' => $description
+                            ]);
+
+                            if($gprls) {
+                                session()->flash('status', 'บันทึกข้อมูลเรียบร้อย');
+                                return redirect('gprl');
+                            } else {
+                                session()->flash('error', 'บันทึกข้อมูลไม่สำเร็จ');
+                                return redirect('gprlEdit/' . $id);
+                            }
+                        }
                     }
                 } else {
                     session()->flash('error', 'ไม่มีไฟล์ภาพหน้าปกกรุณาเพิ่มไฟล์ภาพหน้าปกก่อนบันทึก');
                     return redirect('gprlEdit/' . $id);
                 }
+            // Check ตรวจสอบเมื่อมีการส่ง request ที่มี File ตัวเก่าที่เคยบันทึกลง Database ถึงเข้าเงื่อนไขด้านล่าง End
 
             // Check ตรวจสอบเมื่อมีการส่ง request ที่มี File เข้ามาให้ทำตามกระบวนการด้านล่าง Start
             } elseif($request->hasFile('pdf')) {
@@ -526,6 +552,75 @@ class generalPressReleaseController extends Controller
                 }
             }
             // Check ตรวจสอบเมื่อมีการแก้ไขแค่ Image Title และ description โดยไม่มีการเพิ่ม File PDF ถึงเข้าเงื่อนไขด้านล่าง End
+        } elseif(isset($gprls->pdf)) {
+            if($gprls->pdf) {
+                Storage::delete('public/files/pdfs/gprls/' . $gprls->pdf);
+                if($request->hasFile('pdf')) {
+                    $pdfFile = $request->file('pdf');
+                    $pdfExtensions = $pdfFile->getClientOriginalExtension();
+                    $allowedExtensions = ['pdf'];
+                    if(in_array(strtolower($pdfExtensions), $allowedExtensions)) {
+                        $pdfName = time() . '.' . $pdfExtensions;
+                        $pdfFile->storeAs('public/files/pdfs/gprls', $pdfName);
+                        $user_id = Auth::user()->id;
+
+                        $validatorTitle = Validator::make($request->all(), [
+                            'title' => ['required', 'string', 'max:100'],
+                        ]);
+
+                        if($validatorTitle->fails()) {
+                            session()->flash('error', 'Title ของคุณสามารถตั้งได้ไม่เกิน 100 ตัวอักษร');
+                            return redirect('gprlEdit/' . $id);
+                        } else {
+                            $gprls->update([
+                                'title' => $request->title,
+                                'user_id' => $user_id,
+                                'image' => $imageName,
+                                'pdf' => '',
+                                'description' => $description
+                            ]);
+
+                            if($gprls) {
+                                session()->flash('status', 'บันทึกข้อมูลเรียบร้อย');
+                                return redirect('gprl');
+                            } else {
+                                session()->flash('error', 'บันทึกข้อมูลไม่สำเร็จ');
+                                return redirect('gprlEdit/' . $id);
+                            }
+                        }
+                    }
+                } else {
+                    $user_id = Auth::user()->id;
+
+                    $validatorTitle = Validator::make($request->all(), [
+                        'title' => ['required', 'string', 'max:100'],
+                    ]);
+
+                    if($validatorTitle->fails()) {
+                        session()->flash('error', 'Title ของคุณสามารถตั้งได้ไม่เกิน 100 ตัวอักษร');
+                        return redirect('gprlEdit/' . $id);
+                    } else {
+                        $gprls->update([
+                            'title' => $request->title,
+                            'user_id' => $user_id,
+                            'image' => '',
+                            'pdf' => $gprls->pdf,
+                            'description' => ''
+                        ]);
+
+                        if($gprls) {
+                            session()->flash('status', 'บันทึกข้อมูลเรียบร้อย');
+                            return redirect('gprl');
+                        } else {
+                            session()->flash('error', 'บันทึกข้อมูลไม่สำเร็จ');
+                            return redirect('gprlEdit/' . $id);
+                        }
+                    }
+                }
+            } elseif($gprls->pdf && $description) {
+                session()->flash('error', 'มีไฟล์ pdf เก่าเข้ามาและมี File description เพิ่มมาแทรก');
+                return redirect('gprlEdit/' . $id);
+            }
         }
     }
     // Update GeneralPressRelease End

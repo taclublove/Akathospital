@@ -27,5 +27,7 @@
     @include('index_template.patials.footerScript')
     {{-- Script End --}}
 
+    @yield('script')
+
 </body>
 </html>

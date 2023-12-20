@@ -29,6 +29,10 @@
         </main>
     </div>
 
+    @include('index_template.patials_show.script')
+
+    @yield('script')
+
     <script>
         // Add this script in your Blade template or a separate JavaScript file
 

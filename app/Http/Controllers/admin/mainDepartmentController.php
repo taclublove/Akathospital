@@ -22,7 +22,7 @@ class mainDepartmentController extends Controller
             <thead>
               <tr>
                 <th>ID</th>
-                <th>คำนำหน้า</th>
+                <th>ชื่อแผนก</th>
                 <th>วันที่เพิ่มข้อมูล</th>
                 <th>วันที่ UPDATE ข้อมูล</th>
                 <th>Action</th>
@@ -31,13 +31,13 @@ class mainDepartmentController extends Controller
             <tbody>';
             foreach ($mainDepartments as $mainDepartment) {
                 $output .= '<tr>
-                <td>' . $pf->id . '</td>
-                <td>' . $pf->prefix_name . '</td>
-                <td>' . $pf->created_at . '</td>
-                <td>' . $pf->updated_at . '</td>
+                <td>' . $mainDepartment->id . '</td>
+                <td>' . $mainDepartment->name . '</td>
+                <td>' . $mainDepartment->created_at . '</td>
+                <td>' . $mainDepartment->updated_at . '</td>
                 <td>
-                  <a href="#" id="' . $pf->id . '" class="text-success mx-1 editIcon" data-bs-toggle="modal" data-bs-target="#editPrefixModal"><i class="bi-pencil-square h4"></i></a>
-                  <a href="#" id="' . $pf->id . '" class="text-danger mx-1 deleteIcon"><i class="bi-trash h4"></i></a>
+                  <a href="#" id="' . $mainDepartment->id . '" class="text-success mx-1 editIcon" data-bs-toggle="modal" data-bs-target="#editPrefixModal"><i class="bi-pencil-square h4"></i></a>
+                  <a href="#" id="' . $mainDepartment->id . '" class="text-danger mx-1 deleteIcon"><i class="bi-trash h4"></i></a>
                 </td>
               </tr>';
             }
@@ -49,7 +49,7 @@ class mainDepartmentController extends Controller
     }
     // FatchAll End
 
-    // insert a new ajax request
+    // insert a new ajax request Start
     public function mainDepartmentStore(Request $request) {
         $validatorName = Validator::make($requets->all(), [
             'name' => ['required', 'string', 'max:100']
@@ -75,41 +75,52 @@ class mainDepartmentController extends Controller
             ]);
         }
     }
+    // insert a new ajax request End
 
-    // edit an Prefix ajax request
+    // edit an ajax request Start
     public function mainDepartmentEdit(Request $request) {
         $id = $request->id;
-        $prefix = Prefix::find($id);
-        return response()->json($prefix);
+        $mainDepartment = MainDepartment::find($id);
+        return response()->json($mainDepartment);
     }
 
-    // update an Prefix ajax request
+    // update an ajax request
     public function mainDepartmentUpdate(Request $request) {
         $fileName = '';
-        $prefix = Prefix::find($request->prefix_id);
-        // if ($request->hasFile('avatar')) {
-        //     $file = $request->file('avatar');
-        //     $fileName = time() . '.' . $file->getClientOriginalExtension();
-        //     $file->storeAs('public/images/', $fileName);
-        //     if ($sex->avatar) {
-        //         Storage::delete('public/images/' . $sex->avatar);
-        //     }
-        // } else {
-        //     $fileName = $request->sex_avatar;
-        // }
+        $mainDepartments = MainDepartment::find($request->prefix_id);
 
-        $prefixData = ['prefix_name' => $request->prefix_name];
-
-        $prefix->update($prefixData);
-        return response()->json([
-            'status' => 200,
+        $validatorName = Validator::make($request->all(), [
+            'name' => ['required', 'string', 'max:100']
         ]);
-    }
 
-    // delete an Prefix ajax request
+        if($validatorName->fails()) {
+            return response()->json([
+                'status' => 400,
+                'title' => 'Error!',
+                'message' => 'สามารถกรอกข้อมูลได้แค่ 100 ตัวอักษร',
+                'icon' => 'error'
+            ]);
+        } else {
+            $mainDepartmentData = [
+                'name' => $request->name
+            ];
+
+            $mainDepartments->update($mainDepartmentData);
+            return response()->json([
+                'status' => 200,
+                'title' => 'Added!',
+                'message' => 'แก้ไขข้อมูลเสร็จสิ้น',
+                'icon' => 'success'
+            ]);
+        }
+    }
+    // edit an ajax request End
+
+    // delete an ajax request Start
     public function mainDepartmentDelete(Request $request) {
         $id = $request->id;
-        $prefix = Prefix::find($id);
-        $prefix->delete();
+        $mainDepartment = MainDepartment::find($id);
+        $mainDepartment->delete();
     }
+    // delete an ajax request End
 }

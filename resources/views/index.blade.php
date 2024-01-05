@@ -602,7 +602,7 @@
 
     {{-- ข่าวต่างๆ Start --}}
     <div class="bg-boss">
-        <div class="max-w-full px-[40px] py-[40px] over-lay">
+        <div class="d-flex mx-auto px-[40px] py-[40px] over-lay">
             <div class="mb-4 border-gray-200 dark:border-gray-700">
                 <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-tab"
                     data-tabs-toggle="#default-tab-content" role="tablist" data-aos="fade-right"

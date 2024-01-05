@@ -119,7 +119,7 @@
     {{-- Heroes End --}}
 
     {{-- Website ภายนอก Start --}}
-    <div class="container px-[5rem] relative mt-[2rem] mx-auto mx-[3rem] flex flex-col items-center pb-[40px] ">
+    <div class="container px-[10rem] relative mt-[2rem] mx-auto mx-[3rem] flex flex-col items-center pb-[40px] ">
         <div class="max-w-full w-100 px-[28px] py-5 overflow-x-scroll  h-full none-scroll">
             <h4 class="text-xl font-bold text-dark capitalize  md:text-3xl text-center" data-aos="fade-right"
                 data-aos-duration="600" data-aos-easing="ease-in-sine">⚒️ Website ภายนอก 🛠️</h4>

@@ -119,7 +119,7 @@
     {{-- Heroes End --}}
 
     {{-- Website ภายนอก Start --}}
-    <div class="relative mt-[2rem] mx-auto mx-[3rem] flex flex-col items-center pb-[40px] ">
+    <div class="container px-[5rem] relative mt-[2rem] mx-auto mx-[3rem] flex flex-col items-center pb-[40px] ">
         <div class="max-w-full w-100 px-[28px] py-5 overflow-x-scroll  h-full none-scroll">
             <h4 class="text-xl font-bold text-dark capitalize  md:text-3xl text-center" data-aos="fade-right"
                 data-aos-duration="600" data-aos-easing="ease-in-sine">⚒️ Website ภายนอก 🛠️</h4>
@@ -602,9 +602,9 @@
 
     {{-- ข่าวต่างๆ Start --}}
     <div class="bg-boss">
-        <div class="d-flex mx-auto px-[40px] py-[40px] over-lay">
+        <div class="max-w-full px-[40px] py-[40px] over-lay">
             <div class="mb-4 border-gray-200 dark:border-gray-700">
-                <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-tab"
+                <ul class="flex flex-wrap container mx-auto px-[10rem] text-sm font-medium text-center" id="default-tab"
                     data-tabs-toggle="#default-tab-content" role="tablist" data-aos="fade-right"
                     data-aos-duration="600" data-aos-easing="ease-in-sine">
                     <li class="me-2" role="presentation">
@@ -632,9 +632,9 @@
                     </li>
                 </ul>
             </div>
-            <div id="default-tab-content" data-aos="fade-left"
+            <div class="container mx-auto px-[10rem]" id="default-tab-content" data-aos="fade-left"
             data-aos-duration="600" data-aos-easing="ease-in-sine">
-                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel"
+                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800 " id="profile" role="tabpanel"
                     aria-labelledby="profile-tab">
                     {{-- <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Profile tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p> --}}
                     <h1 class="my-3">กิจกรรม</h1>
@@ -669,6 +669,7 @@
                 <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="dashboard" role="tabpanel"
                     aria-labelledby="dashboard-tab">
                     {{-- <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Dashboard tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p> --}}
+                    <h1 class="my-3">test</h1>
                     <li class="relative flex flex-col sm:flex-row xl:flex-row items-start">
                         <div class="order-1 sm:ml-3 xl:ml-3">
                             <h3 class="mb-1 text-dark font-semibold dark:text-slate-200">
